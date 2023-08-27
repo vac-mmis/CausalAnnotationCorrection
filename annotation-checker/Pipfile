@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyenchant = "~=3.2.2"
+toml = "~=0.10.2"
+pddlpy = "~=0.3.3"
+antlr4-python3-runtime = "==4.9.3"
+requests = "==2.31.0"
+docutils = "==0.20.1"
+
+[dev-packages]
+twine = "~=4.0.2"
+setuptools = "~=67.7.2"
+pytest = "==7.3.1"
+build = "*"
+
+[requires]
+python_version = "3.8"
+python_full_version = "3.8.10"

@@ -1,0 +1,35 @@
+[build-system]
+requires = [
+    "setuptools>=42", "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acheck"
+version = "0.0.3"
+description = "Causal Annotation Correction Tool"
+readme = "README.md"
+authors = [
+    { name = "Felix Gratzkowski", email = "felix.gratzkowski@uni-rostock.de" }
+]
+license = {text= "CC-BY-NC-SA-4.0"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "antlr4-python3-runtime==4.9.3",
+    "pddlpy==0.3.3",
+    "pyenchant==3.2.2",
+    "toml==0.10.2",
+    "requests==2.31.0",
+    "docutils==0.20.1"
+]
+requires-python = ">=3.8"
+
+[project.scripts]
+acheck = "acheck.__main__:main"
+
+
+
