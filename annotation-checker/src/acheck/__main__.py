@@ -260,9 +260,9 @@ def main():
     lock = threading.Lock()
 
     lock_timeout = constants.THREADING_LOCK_TIMEOUT
-    with MyServer(("127.0.0.1", args.port), lock, lock_timeout, tool_meta, checks, args.verbose) as s:
+    with MyServer(("0.0.0.0", args.port), lock, lock_timeout, tool_meta, checks, args.verbose) as s:
         try:
-            logger.info(f"Server is serving on port {s.server_address}")  # Output
+            logger.info(f"Server is serving on ('127.0.0.1', {args.port})")  # Output
             s.serve_forever()
         except KeyboardInterrupt:
             s.shutdown()

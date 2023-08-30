@@ -1,35 +1,32 @@
-# Installation
+This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/). 
 
-This file provides installation instructions for the 
-Causal Annotation Checking tool on Linux, MacOS and an 
-instruction how to use it correctly.
+![img.png](https://camo.githubusercontent.com/f05d4039b67688cfdf339d2a445ad686a60551f9891734c418f7096184de5fac/68747470733a2f2f692e6372656174697665636f6d6d6f6e732e6f72672f6c2f62792d6e632d73612f342e302f38387833312e706e67)
 
+For details view the [Licence file](https://github.com/vac-mmis/CausalAnnotationCorrection/blob/main/LICENSE)!
 
-## Prerequisites
+---
+# Causal Annotation Correction Tool
+A tool support tool for inspection, validation and correction of behavioral annotations.
 
-#### The tool requires:
-- **Python 3.8** or higher. 
-  - If you experience any issues, you may want to have a look at: https://docs.python-guide.org/starting/installation/
-  
-## Clone and prepare for development
-Clone the repository and navigate into the `annotation-checker` directory. Now you will need to install all packages that do not come with python.
-
-- If you want to use `Pipenv`, make sure you are in the repository folder and run:
-	```
-	$ pipenv shell
-	$ pipenv install -e .
-	```
-
-- If you want to use your own virtual environment, make sure you are in the repository folder and run:
-	```
-	$ python -m pip install -r requirements.txt
-	$ python -m pip install -e .
-	```
-
-This will install the module together with all other packages needed.
-
-If you need some help with virtual environments, have a look at: 
-https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
+##Tutorial
+Fast start with `docker`:
+1. Clone the repository
+2. Install docker ([https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/))
+3. With make, simply run: `make tutorial` or otherwise run:
+    ```
+    docker run -p 9000:9000 -it fgratzkowski/cac
+    ```
+    This will run the image from Docker Hub.
+4. Inside the container, go into the Example: `Examples/Annotation_Check` or `Examples/Domain_Creation`
+5. And run the example by invoking: `make run` 
+---
+##Installation
+You can install the package via pip:
+```
+$ pip install acheck
+```
+The tool requires **Python 3.8** or higher. 
+  - If you experience any issues, you may want to have a look at: https://docs.python-guide.
 
 ### Spell Checking
 The tool uses `pyenchant` for spell checking. It is a spellchecking library for Python, based on the [Enchant](https://abiword.github.io/enchant/) library. In order to work properly you will need to install the Enchant C library manually:
@@ -94,9 +91,10 @@ $ acheck config -v /Users/macos64/Val-20211204.1-Darwin/bin/Validate
 $ acheck config -v /Users/linux/Val-20211204.1-Linux/bin/Validate
 $ acheck config -v /Users/windows/Val-20211204.1-Windows/bin/Validate.exe
 ```
+---
 
 # Usage
-After the module has been installed, just use:
+After the package has been installed, just use:
 
 ```
 $ acheck check $domain.pddl $problem.pddl $annotation.csv
@@ -127,25 +125,25 @@ By default, it will automatically start a local server on [127.0.0.1:9000](http:
 - `--inplace`: Work with the original files. For command line only use without backup. 
    
 
-
-## Structure
+---
+# Structure
 
 ### Navbar
 
-![navbar.png](resources/navbar.png)
+![navbar.png](res/navbar.png)
 
 Click on `Check` to check the annotation. `Save` will save all changes that were made.\
 `Show All`displays all errors found for the given annotation and model inside the output window.\
 Click on `Dictionary` to open the dictionary.
 
 ### Dictionary
-![dict.png](resources/dict.png)
+![dict.png](res/dict.png)
 With the `Dictionary` you can tell the spell check to include or exclude words. 
 Inside the dictionary, enter a word and click add to add it to the dictionary. Click on words that has been added to select them and click 'Remove' to delete them from the dictionary.
 
 ### Annotation Editor
 
-![anno_editor.png](resources/anno_editor.png)
+![anno_editor.png](res/anno_editor.png)
 
 Here you can see all open annotations. You can click on the tabs to switch between multiple loaded annotations.
 The errors that were found during the check are highlighted. Click on them for further information. 
@@ -155,19 +153,19 @@ of lines checked by clicking on the desired number of lines
 
 ### Model Editor
 
-![model_editor.png](resources/model_editor.png)
+![model_editor.png](res/model_editor.png)
 
 Inside the model window you can view and edit the domain and problem file. 
 
 ### Check Options
 
-![checks.png](resources/checks.png)
+![checks.png](res/checks.png)
 
 The `Checks` panel contains information for each check applied to the annotation.
 The checks are divided into two groups:  \
 `Continuous Checks` are running everytime you press check. \
 `Sequential Checks` are executed one after another. If a check throws an error, the checking process will stop. 
-    It will move on if all error thrown by the actual checker are fixed.\
+    It will move on if all error thrown by the actual checker are fixed.
 
 You can toggle them off to deactivate them during the checking process. 
 The gear button opens the menu for configuring the check.
@@ -178,7 +176,7 @@ Red means errors have been found that need to be taken care of.
 
 ### Output
 
-![output.png](resources/output.png)
+![output.png](res/output.png)
 
 The Output window displays all errors found in the clicked section of the annotation. If you click on one, you will get a selection of correction suggestions and information about the error. These are:
 - ReplaceSequence: \
@@ -192,50 +190,33 @@ Outputs more information about the error.
 - AdaptModel: \
 If you want to adapt the model, for example by adding actions or objects, AdaptModel copies a template to the clipboard, which you can directly take over and adapt afterwards.
 
-# Example
-
-Simple planning problem
-
-![pop.png](resources/pop.png)
-
-This simple planning problem is that you have to put on these garments in a specific order to achieve the goal of being fully clothed.
-
-Partial Order Plans (POP) are a type of planning algorithm where the order of steps is not completely fixed. Instead, there are conditions that must be met in order to execute a step. These conditions can depend on other steps or be independent of them.
-
-In terms of the sock and shoe problem, a POP plan might look like this:
-
-1. Put on the left sock.
-2. Put on the right sock.
-3. Once the socks are on, put on the left shoe
-4. Once the right sock is on, put on the left shoe
-
-
-### Annotation correction
-You can use the tool to check annotations for errors and correct them if necessary. For this purpose, a correct domain and problem description is required. A simple example can be found at `examples/checking_annotation`.
-
-```
-$ acheck check shoes_d.pddl shoes_p1.pddl shoes.csv -l shoes_d.pddl shoes_p1.pddl
-```
-
-The workflow typically looks like this:
-1. Click `check` for checking the annotation (Navbar)
-2. `check` will always perform a save at first
-3. Now all errors are getting marked (Editor)
-4. Fix the error manually or by using a suggestion for correction (Output)
-5. Repeat until all errors are fixed
-
-
-### Domain creation
-In addition, the tool can also be used to support the creation of domains. There is an example for this in `examples/creating_domain`.
-
-```
-$ acheck check shoes_d_preset.pddl shoes_p1.pddl creating_domain/shoes.csv -l shoes.csv
-```
-
 
 ### Resetting the tool
 If you want to reload the original files just delete the output folder and restart the tool, otherwise the tool will always refer to the 
 saved backup that was created on the first start.
+---
+# Clone and prepare for development
+Clone the repository and navigate into the `annotation-checker` directory. Now you will need to install all packages that do not come with python.
+
+- If you want to use `Pipenv`, make sure you are in the repository folder and run:
+	```
+	$ pipenv shell
+	$ pipenv install -e .
+	```
+
+- If you want to use your own virtual environment, make sure you are in the repository folder and run:
+	```
+	$ python -m pip install -r requirements.txt
+	$ python -m pip install -e .
+	```
+
+This will install the module together with all other packages needed.
+
+If you need some help with virtual environments, have a look at: 
+https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
+
+Get further information and documentation at:
+sphinx documentation page
 
 ---
 

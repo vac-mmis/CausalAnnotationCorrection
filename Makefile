@@ -8,14 +8,14 @@ ifdef PORT
     PORT_VAR := $(PORT)
 endif
 
-build: Dockerfile
-	docker build -t ${IMAGE_NAME} .
 
-runhub:
-	docker run -p $(PORT_VAR):$(PORT_VAR) --mount type=bind,source=".",target="/home/cac/CausalAnnotationCorrection" -it ${IMAGE_NAME_HUB}
-
-run:
-	docker run -p $(PORT_VAR):$(PORT_VAR) --mount type=bind,source=".",target="/home/cac/CausalAnnotationCorrection" -it ${IMAGE_NAME}
-
+build:
+	docker build -t cac . --no-cache
+push:
+	docker build -t cac . --no-cache
+	docker tag cac fgratzkowski/cac
+	docker push fgratzkowski/cac
+tutorial:
+	docker run -p $(PORT_VAR):$(PORT_VAR) -it ${IMAGE_NAME_HUB}
 clean:
 	docker system prune

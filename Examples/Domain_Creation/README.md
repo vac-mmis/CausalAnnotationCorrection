@@ -2,7 +2,7 @@
 In addition, the tool can also be used to support the creation of domains. There is an example for this in `examples/creating_domain`.
 
 ```
-$ acheck check shoes_d_preset.pddl shoes_p1.pddl creating_domain/shoes.csv -l shoes.csv
+$ acheck check shoes_d_preset.pddl shoes_p1.pddl shoes.csv -l shoes.csv
 ```
 
 ### Resetting 'the tool'

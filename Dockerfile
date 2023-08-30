@@ -5,11 +5,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update 
 RUN apt-get install -y wget
 RUN apt-get install -y unzip
+RUN apt-get install -y make
 
 RUN groupadd cac
 RUN useradd -m -g cac -s /bin/bash cac
 
-RUN mkdir -p / home/cac
+RUN mkdir -p /home/cac/CausalAnnotationCorrection
 
 WORKDIR /home/cac
 
@@ -27,9 +28,12 @@ RUN acheck config -v Val-20211204.1-Linux/bin/Validate
 #Install enchant and all spellchecking libraries
 RUN apt-get install -y enchant
 RUN apt-get install -y aspell-de
+RUN apt-get install -y aspell-en
+RUN apt-get install -y aspell-fr
 
 
 WORKDIR /home/cac/CausalAnnotationCorrection
+COPY Examples /home/cac/CausalAnnotationCorrection/Examples
 
 RUN chown -R cac:cac /home/cac
 USER cac

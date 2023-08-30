@@ -296,8 +296,8 @@ def group_errors_by_line(error_list: List[Error]) -> dict:
 
 def group_errors_inline(errors: List[Error]) -> dict:
     """
-     Errors are grouped by line. If the sequences of the errors overlap, they are included in the same group.
-    :param error_list: List of errors
+    Errors are grouped by line. If the sequences of the errors overlap, they are included in the same group.
+    :param List[Error] errors: List of errors
     :return: A dictionary that contains all groups. It has the start index and the end index of each group as a key and the values are then all associated errors in a list.
     """
     groups = {}
