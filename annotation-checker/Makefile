@@ -9,10 +9,7 @@ buildtest:
 docs:
 	rm -rf src\docs\_build
 	src\docs\make.bat html
-	cp -a src\docs\_build\html\. ../../fgratzkowski.github.io
-	cd ../../fgratzkowski.github.io
-	git remote set-url origin https://github.com/fgratzkowski/fgratzkowski.github.io.git
-	git add --all
-	git commit -am "update"
-	git push
+	rm -rf ../../fgratzkowski.github.io/docs/
+	mkdir ../../fgratzkowski.github.io/docs/
+	cp -a src\docs\_build\html\. ../../fgratzkowski.github.io/docs
 

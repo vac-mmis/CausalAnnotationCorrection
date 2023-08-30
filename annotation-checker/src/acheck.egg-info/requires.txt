@@ -1,5 +1,0 @@
-antlr4-python3-runtime==4.9.3
-pddlpy==0.3.3
-pyenchant==3.2.2
-toml==0.10.2
-requests==2.31.0
