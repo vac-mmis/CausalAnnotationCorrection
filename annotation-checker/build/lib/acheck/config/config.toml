@@ -1,0 +1,21 @@
+[Annotation]
+regex_expression_structure = "[a-zA-Z0-9]+(_[a-zA-Z0-9]+)*(-[a-zA-Z0-9]+(_[a-zA-Z-0-9]+)*)*"
+regex_characters = "[^a-zA-Z0-9,_-]"
+regex_time = "[^0-9.-]"
+lang = "en_US"
+whitespace_divider = "_"
+term_divider = "-"
+csv_delimiter = ","
+csv_quotechar = "|"
+csv_columns = 2
+csv_sniffer_size = 1024
+
+[SpellCheck]
+candidates = 3
+
+[Validator]
+path = ""
+timeout = 5
+
+[DomainProblemCheck]
+timeout = 5

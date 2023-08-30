@@ -8,20 +8,39 @@ For details view the [Licence file](https://github.com/vac-mmis/CausalAnnotation
 # Causal Annotation Correction Tool
 A tool support tool for inspection, validation and correction of behavioral annotations.
 
-##Tutorial
-Fast start with `docker`:
-1. Clone the repository
-2. Install docker ([https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/))
-3. With make, simply run: `make tutorial` or otherwise run:
+## Installation with Docker
+
+- Install docker ([https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/))
+
+Fast start the example:
+1. Just run the image from docker hub:
     ```
-    docker run -p 9000:9000 -it fgratzkowski/cac
+    $ docker run -p 9000:9000 -it fgratzkowski/cac
     ```
-    This will run the image from Docker Hub.
-4. Inside the container, go into the Example: `Examples/Annotation_Check` or `Examples/Domain_Creation`
-5. And run the example by invoking: `make run` 
+2. Navigate to: `Examples/Checking_Annotation` or `Examples/Creating_Domain`
+3. Simply invoke: `make run`
+
+Use your own files:
+1. On your system, navigate to the directory that contains the files you want to use (domain.pddl, problem.pddl, annotation.csv).
+2. Run the image from docker hub:
+    ```
+    $ docker run -p 9000:9000  docker run -p 9000:9000 --mount type=bind,source=".",target="/home/cac/CausalAnnotationCorrection/OUTSIDE" -it fgratzkowski/cac -it fgratzkowski/cac
+    ```
+3. You will find your files in the `OUTSIDE` directory:
+    ```
+    $ cd OUTSIDE
+    ```
+4. Simply run the tool by invoking:
+    ```
+    $ acheck check $domain.pddl $problem.pddl $annotation.csv
+    ```
+   For more information check out the `Usage` section below.
+
+
 ---
-##Installation
-You can install the package via pip:
+## Installation
+If you just want to use the tool independently of docker,
+you can install the package via `pip`:
 ```
 $ pip install acheck
 ```
@@ -204,7 +223,7 @@ Clone the repository and navigate into the `annotation-checker` directory. Now y
 	$ pipenv install -e .
 	```
 
-- If you want to use your own virtual environment, make sure you are in the repository folder and run:
+- If you want to use your own virtual environment:
 	```
 	$ python -m pip install -r requirements.txt
 	$ python -m pip install -e .

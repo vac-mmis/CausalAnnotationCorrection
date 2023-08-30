@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example &mdash; CausalAnnotationCorrection 0.0.5 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=0a554088"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GUI" href="structure.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CausalAnnotationCorrection
+          </a>
+              <div class="version">
+                0.0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#simple-planning-problem">Simple planning problem</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#annotation-correction">Annotation correction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#domain-creation">Domain creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resetting">Resetting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acheck.html">Full list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acheck.html#by-module">By module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CausalAnnotationCorrection</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/example.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="example">
+<span id="id1"></span><h1>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h1>
+<section id="simple-planning-problem">
+<h2>Simple planning problem<a class="headerlink" href="#simple-planning-problem" title="Permalink to this heading"></a></h2>
+<a class="reference external image-reference" href="_static/res/pop.png"><img alt="pop.png" src="_images/pop.png" /></a>
+<p>This simple planning problem is that you have to put on these garments in a specific order to achieve the goal of being fully clothed.</p>
+<p>Partial Order Plans (POP) are a type of planning algorithm where the order of steps is not completely fixed. Instead, there are conditions that must be met in order to execute a step. These conditions can depend on other steps or be independent of them.</p>
+<p>In terms of the sock and shoe problem, a POP plan might look like this:</p>
+<ol class="arabic simple">
+<li><p>Put on the left sock.</p></li>
+<li><p>Put on the right sock.</p></li>
+<li><p>Once the socks are on, put on the left shoe</p></li>
+<li><p>Once the right sock is on, put on the left shoe</p></li>
+</ol>
+<section id="annotation-correction">
+<h3>Annotation correction<a class="headerlink" href="#annotation-correction" title="Permalink to this heading"></a></h3>
+<p>You can use the tool to check annotations for errors and correct them if necessary. For this purpose, a correct domain and problem description is required. A simple example can be found at <code class="docutils literal notranslate"><span class="pre">examples/checking_annotation</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ acheck check shoes_d.pddl shoes_p1.pddl shoes.csv -l shoes_d.pddl shoes_p1.pddl
+</pre></div>
+</div>
+<p>The workflow typically looks like this:</p>
+<ol class="arabic simple">
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">check</span></code> for checking the annotation (Navbar)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">check</span></code> will always perform a save at first</p></li>
+<li><p>Now all errors are getting marked (Editor)</p></li>
+<li><p>Fix the error manually or by using a suggestion for correction (Output)</p></li>
+<li><p>Repeat until all errors are fixed</p></li>
+</ol>
+</section>
+<section id="domain-creation">
+<h3>Domain creation<a class="headerlink" href="#domain-creation" title="Permalink to this heading"></a></h3>
+<p>In addition, the tool can also be used to support the creation of domains. There is an example for this in <code class="docutils literal notranslate"><span class="pre">examples/creating_domain</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ acheck check shoes_d_preset.pddl shoes_p1.pddl creating_domain/shoes.csv -l shoes.csv
+</pre></div>
+</div>
+</section>
+<section id="resetting">
+<h3>Resetting<a class="headerlink" href="#resetting" title="Permalink to this heading"></a></h3>
+<p>If you want to reload the original files just delete the output folder and restart the tool, otherwise the tool will always refer to the
+saved backup that was created on the first start.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="structure.html" class="btn btn-neutral float-right" title="GUI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Felix Gratzkowski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

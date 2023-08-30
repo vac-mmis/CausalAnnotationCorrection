@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>acheck.checks.spelling &mdash; CausalAnnotationCorrection 0.0.5 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=0a554088"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            CausalAnnotationCorrection
+          </a>
+              <div class="version">
+                0.0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../structure.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../acheck.html">Full list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../acheck.html#by-module">By module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CausalAnnotationCorrection</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">acheck.checks.spelling</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for acheck.checks.spelling</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">import</span> <span class="nn">difflib</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">acheck.config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">acheck.checking.check_interface</span> <span class="kn">import</span> <span class="n">Check</span><span class="p">,</span> <span class="n">ToolObjectsMeta</span><span class="p">,</span> <span class="n">CheckGroup</span>
+<span class="kn">from</span> <span class="nn">acheck.checking.error</span> <span class="kn">import</span> <span class="n">Error</span><span class="p">,</span> <span class="n">ErrorType</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Fix</span><span class="p">,</span> <span class="n">FixCode</span><span class="p">,</span> <span class="n">ErrorLevel</span>
+<span class="kn">from</span> <span class="nn">acheck.utils.annotationhelper</span> <span class="kn">import</span> <span class="n">parse_annotation</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="SpellCheck"><a class="viewcode-back" href="../../../acheck.checks.html#acheck.checks.spelling.SpellCheck">[docs]</a><span class="k">class</span> <span class="nc">SpellCheck</span><span class="p">(</span><span class="n">Check</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks whether the given annotation has spelling mistakes</span>
+
+<span class="sd">    :Options:</span>
+<span class="sd">        - language:</span>
+<span class="sd">            Supported languages if installed correctly: en_US, en_GB, de_DE</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">language</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;Annotation&quot;</span><span class="p">,</span><span class="s2">&quot;lang&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SpellCheck.run"><a class="viewcode-back" href="../../../acheck.checks.html#acheck.checks.spelling.SpellCheck.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation_file</span><span class="p">,</span> <span class="n">domain_file</span><span class="p">,</span> <span class="n">problem_file</span><span class="p">,</span> <span class="n">line_limit</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Error</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">enchant.checker</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An error occurred during import. Try to install the enchant C-library&quot;</span><span class="p">)</span>
+            <span class="k">raise</span>
+
+        <span class="n">pwl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_meta</span><span class="o">.</span><span class="n">pwl</span>
+        <span class="n">pel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_meta</span><span class="o">.</span><span class="n">pel</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_spelling</span><span class="p">(</span><span class="n">annotation_file</span><span class="o">=</span><span class="n">annotation_file</span><span class="p">,</span>
+                                   <span class="n">pwl</span><span class="o">=</span><span class="n">pwl</span><span class="p">,</span>
+                                   <span class="n">pel</span><span class="o">=</span><span class="n">pel</span><span class="p">,</span>
+                                   <span class="n">auto_add</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                   <span class="n">check_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                                   <span class="n">ench</span><span class="o">=</span><span class="n">enchant</span><span class="p">,</span>
+                                   <span class="n">lang</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">),</span>
+                                   <span class="n">line_limit</span><span class="o">=</span><span class="n">line_limit</span><span class="p">,</span>
+                                   <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SpellCheck.check_spelling"><a class="viewcode-back" href="../../../acheck.checks.html#acheck.checks.spelling.SpellCheck.check_spelling">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_spelling</span><span class="p">(</span><span class="n">annotation_file</span><span class="p">,</span> <span class="n">check_id</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">,</span> <span class="n">ench</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">pwl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">auto_add</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param lang:</span>
+<span class="sd">        :param ench:</span>
+<span class="sd">        :param line_limit:</span>
+<span class="sd">        :param check_id:</span>
+<span class="sd">        :param annotation_file:</span>
+<span class="sd">        :param pwl:</span>
+<span class="sd">        :param pel:</span>
+<span class="sd">        :param auto_add:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">error_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">term_divider</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;Annotation&quot;</span><span class="p">,</span><span class="s2">&quot;term_divider&quot;</span><span class="p">)</span>
+        <span class="n">whitespace_divider</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;Annotation&quot;</span><span class="p">,</span><span class="s2">&quot;whitespace_divider&quot;</span><span class="p">)</span>
+        <span class="n">candidates_number</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;SpellCheck&quot;</span><span class="p">,</span><span class="s2">&quot;candidates&quot;</span><span class="p">)</span>
+
+        <span class="n">times</span><span class="p">,</span> <span class="n">divs</span><span class="p">,</span> <span class="n">expressions</span> <span class="o">=</span> <span class="n">parse_annotation</span><span class="p">(</span><span class="n">annotation_file</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">)</span>
+        <span class="n">enchant_dict</span> <span class="o">=</span> <span class="n">ench</span><span class="o">.</span><span class="n">DictWithPWL</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">pwl</span><span class="p">,</span> <span class="n">pel</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">pwl</span> <span class="ow">or</span> <span class="n">pel</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Trying to access enchant without initialized dictionary. </span><span class="se">\n</span><span class="s2">&quot;</span>
+                         <span class="s2">&quot;Try to initialize it before you run the spellcheck. </span><span class="se">\n</span><span class="s2">&quot;</span>
+                         <span class="s2">&quot;Otherwise it won&#39;t work properly&quot;</span><span class="p">)</span>
+            <span class="n">enchant_dict</span> <span class="o">=</span> <span class="n">ench</span><span class="o">.</span><span class="n">DictWithPWL</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="s2">&quot;deleteme&quot;</span><span class="p">,</span> <span class="s2">&quot;deleteme&quot;</span><span class="p">)</span>
+
+        <span class="n">frequency_list</span> <span class="o">=</span> <span class="n">_count_words</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expressions</span><span class="p">),</span> <span class="n">whitespace_divider</span><span class="p">,</span> <span class="n">term_divider</span><span class="p">)</span>
+        <span class="n">candidates_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">line_index</span><span class="p">,</span> <span class="n">expression</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">expressions</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">expression</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">words</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">whitespace_divider</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">term_divider</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">words_split</span> <span class="o">=</span> <span class="n">words</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+            <span class="n">start_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">line_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">divs</span><span class="p">[</span><span class="n">line_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words_split</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot; &quot;</span> <span class="ow">in</span> <span class="n">word</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+
+                    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
+                            <span class="n">start_index</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">candidates_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">error_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">Error</span><span class="p">(</span>
+                            <span class="n">file_name</span><span class="o">=</span><span class="n">annotation_file</span><span class="p">,</span>
+                            <span class="n">error_type</span><span class="o">=</span><span class="n">ErrorType</span><span class="o">.</span><span class="n">WrongSpelling</span><span class="p">,</span>
+                            <span class="n">fixes</span><span class="o">=</span><span class="p">[</span><span class="n">Fix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fix_code</span><span class="o">=</span><span class="n">FixCode</span><span class="o">.</span><span class="n">ReplaceSequence</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">candidates_dict</span><span class="p">[</span><span class="n">word</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span>
+                                <span class="n">Fix</span><span class="p">(</span><span class="s2">&quot;{{custom}}&quot;</span><span class="p">,</span> <span class="n">fix_code</span><span class="o">=</span><span class="n">FixCode</span><span class="o">.</span><span class="n">ReplaceSequence</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="n">Fix</span><span class="p">(</span><span class="n">fix_code</span><span class="o">=</span><span class="n">FixCode</span><span class="o">.</span><span class="n">AddToDict</span><span class="p">,</span><span class="n">correct_string</span><span class="o">=</span><span class="n">word</span><span class="p">)]</span> <span class="o">+</span>
+                                  <span class="p">[</span><span class="n">Fix</span><span class="p">(</span><span class="n">fix_code</span><span class="o">=</span><span class="n">FixCode</span><span class="o">.</span><span class="n">RemoveSequence</span><span class="p">)]</span>
+                                  <span class="p">,</span>
+                            <span class="n">line_number</span><span class="o">=</span><span class="n">line_index</span><span class="p">,</span>
+                            <span class="n">incorrect_sequence</span><span class="o">=</span><span class="n">Sequence</span><span class="p">(</span><span class="n">start_index</span><span class="p">,</span> <span class="n">word</span><span class="p">),</span>
+                            <span class="n">error_level</span><span class="o">=</span><span class="n">ErrorLevel</span><span class="o">.</span><span class="n">Warning</span><span class="p">,</span>
+                            <span class="n">check_id</span><span class="o">=</span><span class="n">check_id</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">start_index</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">enchant_dict</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+
+                    <span class="n">suggestions</span> <span class="o">=</span> <span class="n">enchant_dict</span><span class="o">.</span><span class="n">suggest</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">auto_add</span><span class="p">:</span>
+                        <span class="n">suggestions</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot; &quot;</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">suggestions</span><span class="p">]</span>
+
+                        <span class="c1"># eliminate duplicates</span>
+                        <span class="n">suggestions_without_duplicates</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="p">[</span><span class="n">suggestions_without_duplicates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">suggestions</span> <span class="k">if</span>
+                         <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">suggestions_without_duplicates</span><span class="p">]</span>
+
+                        <span class="n">matches</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">get_close_matches</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">suggestions</span><span class="p">,</span> <span class="n">candidates_number</span><span class="p">)</span>
+
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1">#maybe not eliminate uppercase letters</span>
+                        <span class="n">suggestions</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">suggestions</span> <span class="k">if</span>
+                                       <span class="s2">&quot; &quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span> <span class="ow">and</span> <span class="s2">&quot;-&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\w*[A-Z]\w*&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">))]</span>
+                        <span class="n">matches</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">get_close_matches</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">suggestions</span><span class="p">,</span> <span class="n">candidates_number</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">frequency_list</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                        <span class="n">matches</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_frequency_in_text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">frequency_list</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                    <span class="n">error_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">Error</span><span class="p">(</span>
+                            <span class="n">file_name</span><span class="o">=</span><span class="n">annotation_file</span><span class="p">,</span>
+                            <span class="n">error_type</span><span class="o">=</span><span class="n">ErrorType</span><span class="o">.</span><span class="n">WrongSpelling</span><span class="p">,</span>
+                            <span class="n">fixes</span><span class="o">=</span><span class="p">[</span><span class="n">Fix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fix_code</span><span class="o">=</span><span class="n">FixCode</span><span class="o">.</span><span class="n">ReplaceSequence</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+                                <span class="n">Fix</span><span class="p">(</span><span class="s2">&quot;{{custom}}&quot;</span><span class="p">,</span> <span class="n">fix_code</span><span class="o">=</span><span class="n">FixCode</span><span class="o">.</span><span class="n">ReplaceSequence</span><span class="p">)]</span><span class="o">+</span> <span class="p">[</span><span class="n">Fix</span><span class="p">(</span><span class="n">fix_code</span><span class="o">=</span><span class="n">FixCode</span><span class="o">.</span><span class="n">AddToDict</span><span class="p">,</span><span class="n">correct_string</span><span class="o">=</span><span class="n">word</span><span class="p">)]</span>  <span class="o">+</span> <span class="p">[</span>
+                                      <span class="n">Fix</span><span class="p">(</span><span class="n">fix_code</span><span class="o">=</span><span class="n">FixCode</span><span class="o">.</span><span class="n">RemoveSequence</span><span class="p">)],</span>
+                            <span class="n">line_number</span><span class="o">=</span><span class="n">line_index</span><span class="p">,</span>
+                            <span class="n">incorrect_sequence</span><span class="o">=</span><span class="n">Sequence</span><span class="p">(</span><span class="n">start_index</span><span class="p">,</span> <span class="n">word</span><span class="p">),</span>
+                            <span class="n">error_level</span><span class="o">=</span><span class="n">ErrorLevel</span><span class="o">.</span><span class="n">Warning</span><span class="p">,</span>
+                            <span class="n">check_id</span><span class="o">=</span><span class="n">check_id</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">candidates_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">word</span><span class="p">:</span> <span class="n">matches</span><span class="p">})</span>
+                <span class="n">start_index</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">error_list</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_frequency_in_text</span><span class="p">(</span><span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">frequency_list</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="n">frequency</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">frequency_list</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">frequency</span> <span class="o">=</span> <span class="n">frequency_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">frequency</span>
+
+
+<span class="k">def</span> <span class="nf">_count_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">divider</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">div</span> <span class="ow">in</span> <span class="n">divider</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">div</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">Counter</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">))</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Felix Gratzkowski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

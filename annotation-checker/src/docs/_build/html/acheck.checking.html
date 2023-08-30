@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>acheck.checking.check_interface &mdash; CausalAnnotationCorrection 0.0.5 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=0a554088"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="acheck.checks" href="acheck.checks.html" />
+    <link rel="prev" title="Full list" href="acheck.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CausalAnnotationCorrection
+          </a>
+              <div class="version">
+                0.0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acheck.html">Full list</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="acheck.html#by-module">By module</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">acheck.checking.check_interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.check_interface.Check"><code class="docutils literal notranslate"><span class="pre">Check</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.Check.get_option_as_config"><code class="docutils literal notranslate"><span class="pre">Check.get_option_as_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.Check.get_option_types"><code class="docutils literal notranslate"><span class="pre">Check.get_option_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.Check.run"><code class="docutils literal notranslate"><span class="pre">Check.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.check_interface.CheckGroup"><code class="docutils literal notranslate"><span class="pre">CheckGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.CheckGroup.Async"><code class="docutils literal notranslate"><span class="pre">CheckGroup.Async</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.CheckGroup.Default"><code class="docutils literal notranslate"><span class="pre">CheckGroup.Default</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.CheckGroup.PreStart"><code class="docutils literal notranslate"><span class="pre">CheckGroup.PreStart</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta"><code class="docutils literal notranslate"><span class="pre">ToolObjectsMeta</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta.annotations"><code class="docutils literal notranslate"><span class="pre">ToolObjectsMeta.annotations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta.models"><code class="docutils literal notranslate"><span class="pre">ToolObjectsMeta.models</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta.output"><code class="docutils literal notranslate"><span class="pre">ToolObjectsMeta.output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta.pel"><code class="docutils literal notranslate"><span class="pre">ToolObjectsMeta.pel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta.pwl"><code class="docutils literal notranslate"><span class="pre">ToolObjectsMeta.pwl</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta.signatures"><code class="docutils literal notranslate"><span class="pre">ToolObjectsMeta.signatures</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta.validator"><code class="docutils literal notranslate"><span class="pre">ToolObjectsMeta.validator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.check_interface.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-acheck.checking.error">acheck.checking.error</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.Error.to_dict"><code class="docutils literal notranslate"><span class="pre">Error.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.ErrorLevel"><code class="docutils literal notranslate"><span class="pre">ErrorLevel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorLevel.Error"><code class="docutils literal notranslate"><span class="pre">ErrorLevel.Error</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorLevel.Warning"><code class="docutils literal notranslate"><span class="pre">ErrorLevel.Warning</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.ErrorType"><code class="docutils literal notranslate"><span class="pre">ErrorType</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.IllegalCSVFile"><code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalCSVFile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.IllegalCharacter"><code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalCharacter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.IllegalDomainDescription"><code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalDomainDescription</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.IllegalExpressionStructure"><code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalExpressionStructure</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.IllegalFile"><code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalFile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.IllegalProblemDescription"><code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalProblemDescription</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.IllegalSignature"><code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalSignature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.IllegalTimestampNoNumber"><code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalTimestampNoNumber</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.IllegalTimestampNotAscending"><code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalTimestampNotAscending</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.PlanValidationError"><code class="docutils literal notranslate"><span class="pre">ErrorType.PlanValidationError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.UnknownAction"><code class="docutils literal notranslate"><span class="pre">ErrorType.UnknownAction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.UnknownObject"><code class="docutils literal notranslate"><span class="pre">ErrorType.UnknownObject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.ErrorType.WrongSpelling"><code class="docutils literal notranslate"><span class="pre">ErrorType.WrongSpelling</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.Fix"><code class="docutils literal notranslate"><span class="pre">Fix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.FixCode"><code class="docutils literal notranslate"><span class="pre">FixCode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.FixCode.AdaptModel"><code class="docutils literal notranslate"><span class="pre">FixCode.AdaptModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.FixCode.AddToDict"><code class="docutils literal notranslate"><span class="pre">FixCode.AddToDict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.FixCode.Alert"><code class="docutils literal notranslate"><span class="pre">FixCode.Alert</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.FixCode.RemoveSequence"><code class="docutils literal notranslate"><span class="pre">FixCode.RemoveSequence</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.FixCode.ReplaceSequence"><code class="docutils literal notranslate"><span class="pre">FixCode.ReplaceSequence</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checking.error.FixCode.WhitelistSignature"><code class="docutils literal notranslate"><span class="pre">FixCode.WhitelistSignature</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.Sequence"><code class="docutils literal notranslate"><span class="pre">Sequence</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.build_advice"><code class="docutils literal notranslate"><span class="pre">build_advice()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.from_dict"><code class="docutils literal notranslate"><span class="pre">from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.group_errors_by_line"><code class="docutils literal notranslate"><span class="pre">group_errors_by_line()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.group_errors_inline"><code class="docutils literal notranslate"><span class="pre">group_errors_inline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.read_list"><code class="docutils literal notranslate"><span class="pre">read_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.write_groups"><code class="docutils literal notranslate"><span class="pre">write_groups()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acheck.checking.error.write_list"><code class="docutils literal notranslate"><span class="pre">write_list()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="acheck.checks.html">acheck.checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="acheck.html#acheck.checkers.register_checks"><code class="docutils literal notranslate"><span class="pre">register_checks()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CausalAnnotationCorrection</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="acheck.html">Full list</a></li>
+      <li class="breadcrumb-item active">acheck.checking.check_interface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/acheck.checking.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-acheck.checking.check_interface">
+<span id="acheck-checking-check-interface"></span><h1>acheck.checking.check_interface<a class="headerlink" href="#module-acheck.checking.check_interface" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.Check">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checking.check_interface.</span></span><span class="sig-name descname"><span class="pre">Check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/check_interface.html#Check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.check_interface.Check" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>This is an interface for creating checks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – This id is necessary to identify the checks in the tool, it is assigned automatically when creating the check. Defaults to “-1”.</p></li>
+<li><p><strong>logs</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list to pass additional outputs to the tool. Defaults to “[]”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tool_meta</strong> (<a class="reference internal" href="#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><em>ToolObjectsMeta</em></a>) – (Instance Attribute) A current instance of a ToolObjectsMeta object, which was initiated in the main script.</p></li>
+<li><p><strong>group</strong> (<a class="reference internal" href="#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><em>check_interface.CheckGroup</em></a>) – A group to differentiate between the checks’ behavior.</p></li>
+<li><p><strong>displayed_name</strong> (<em>str</em>) – (Instance Attribute) A custom name that will be displayed in the tool.</p></li>
+<li><p><strong>active</strong> (<em>bool</em>) – Activates the check in the tool directly, the check can be deactivated in the tool. Defaults to “true”.</p></li>
+<li><p><strong>disabled</strong> (<em>bool</em>) – If this attribute is True, the check is disabled in the tool and cannot be used. This usually happens when certain requirements are not met to run the check correctly, e.g. third party software. If the run method raises an exception this also will be set to True.</p></li>
+<li><p><strong>options</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>str</em><em>,</em><em>bool</em><em>,</em><em>int</em><em>,</em><em>float</em><em>]</em><em>]</em>) – All additional arguments that the check requires specifically for itself are stored here.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Each option can be either of type str, bool, int or float. Generally all additional attributes defined in the check class are automatically converted into an option. However, all options with value can also be set by default when initializing the check.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.Check.get_option_as_config">
+<span class="sig-name descname"><span class="pre">get_option_as_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/check_interface.html#Check.get_option_as_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.check_interface.Check.get_option_as_config" title="Permalink to this definition"></a></dt>
+<dd><p>A function that checks if all arguments have an appropriate type. Otherwise, it raises an error.
+Allowed typed are: <cite>int</cite>, <cite>str</cite>, <cite>bool</cite>, <cite>float</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing all extra arguments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, Union[str,bool,int,float]]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If arguments are not of type int, str, float or bool.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.Check.get_option_types">
+<span class="sig-name descname"><span class="pre">get_option_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/check_interface.html#Check.get_option_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.check_interface.Check.get_option_types" title="Permalink to this definition"></a></dt>
+<dd><p>A function that checks if all arguments have an appropriate type. Otherwise, it raises an error.
+Allowed typed are: <cite>int</cite>, <cite>str</cite>, <cite>bool</cite>, <cite>float</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing all extra arguments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, Union[str,bool,int,float]]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> – If arguments are not of type int, str, float or bool.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.Check.run">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checking/check_interface.html#Check.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.check_interface.Check.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.CheckGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checking.check_interface.</span></span><span class="sig-name descname"><span class="pre">CheckGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/check_interface.html#CheckGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.check_interface.CheckGroup" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Separating checks into different groups with different behavior.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.CheckGroup.Async">
+<span class="sig-name descname"><span class="pre">Async</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#acheck.checking.check_interface.CheckGroup.Async" title="Permalink to this definition"></a></dt>
+<dd><p>Checks in this group will always run next to every check in the Default group. Such as spell checking.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.CheckGroup.Default">
+<span class="sig-name descname"><span class="pre">Default</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(2,)</span></em><a class="headerlink" href="#acheck.checking.check_interface.CheckGroup.Default" title="Permalink to this definition"></a></dt>
+<dd><p>Checks in this group are executed one after another. If a check throws an error, the loop will stop. 
+It will move on if all error thrown by the actual checker are fixed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.CheckGroup.PreStart">
+<span class="sig-name descname"><span class="pre">PreStart</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,)</span></em><a class="headerlink" href="#acheck.checking.check_interface.CheckGroup.PreStart" title="Permalink to this definition"></a></dt>
+<dd><p>PreStart checks are evaluated before the program starts. Such as file reading. 
+Checks in this group will be running one by one. PreStart Checks will also be added to the Default group.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.ToolObjectsMeta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checking.check_interface.</span></span><span class="sig-name descname"><span class="pre">ToolObjectsMeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output:</span> <span class="pre">~pathlib.Path</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotations:</span> <span class="pre">~typing.List[~typing.Dict]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">models:</span> <span class="pre">~typing.List[~typing.Dict]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pwl:</span> <span class="pre">~pathlib.Path</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pel:</span> <span class="pre">~pathlib.Path</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signatures:</span> <span class="pre">~pathlib.Path</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator:</span> <span class="pre">~pathlib.Path</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/check_interface.html#ToolObjectsMeta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.check_interface.ToolObjectsMeta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds all information about all needed file paths and names</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output</strong> (<em>Path</em>) – The output path for the folder structure of the working copy, defaults to None</p></li>
+<li><p><strong>annotations</strong> (<em>List</em><em>[</em><em>Dict</em><em>]</em>) – A list of all annotation objects</p></li>
+<li><p><strong>models</strong> (<em>List</em><em>[</em><em>Dict</em><em>]</em>) – A list of all model objects</p></li>
+<li><p><strong>pwl</strong> (<em>Path</em>) – The path for the personal words list of the spelling corrector</p></li>
+<li><p><strong>pel</strong> (<em>Path</em>) – The path for the excluded words list of the spelling corrector</p></li>
+<li><p><strong>signatures</strong> (<em>Path</em>) – The path of the signature file that stores the signature marked as correct for each action.</p></li>
+<li><p><strong>validator</strong> (<em>Path</em>) – The path of the plan validator executable.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.ToolObjectsMeta.annotations">
+<span class="sig-name descname"><span class="pre">annotations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#acheck.checking.check_interface.ToolObjectsMeta.annotations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.ToolObjectsMeta.models">
+<span class="sig-name descname"><span class="pre">models</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#acheck.checking.check_interface.ToolObjectsMeta.models" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.ToolObjectsMeta.output">
+<span class="sig-name descname"><span class="pre">output</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#acheck.checking.check_interface.ToolObjectsMeta.output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.ToolObjectsMeta.pel">
+<span class="sig-name descname"><span class="pre">pel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#acheck.checking.check_interface.ToolObjectsMeta.pel" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.ToolObjectsMeta.pwl">
+<span class="sig-name descname"><span class="pre">pwl</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#acheck.checking.check_interface.ToolObjectsMeta.pwl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.ToolObjectsMeta.signatures">
+<span class="sig-name descname"><span class="pre">signatures</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#acheck.checking.check_interface.ToolObjectsMeta.signatures" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.ToolObjectsMeta.validator">
+<span class="sig-name descname"><span class="pre">validator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#acheck.checking.check_interface.ToolObjectsMeta.validator" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="acheck.checking.check_interface.logger">
+<span class="sig-prename descclassname"><span class="pre">acheck.checking.check_interface.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">acheck.checking.check_interface</span> <span class="pre">(WARNING)&gt;</span></em><a class="headerlink" href="#acheck.checking.check_interface.logger" title="Permalink to this definition"></a></dt>
+<dd><p>Register logging</p>
+</dd></dl>
+
+</section>
+<section id="module-acheck.checking.error">
+<span id="acheck-checking-error"></span><h1>acheck.checking.error<a class="headerlink" href="#module-acheck.checking.error" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checking.error.Error">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">Error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#acheck.checking.error.ErrorType" title="acheck.checking.error.ErrorType"><span class="pre">ErrorType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incorrect_sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#acheck.checking.error.Sequence" title="acheck.checking.error.Sequence"><span class="pre">Sequence</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#acheck.checking.error.Fix" title="acheck.checking.error.Fix"><span class="pre">Fix</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ErrorLevel.Error</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">advice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/error.html#Error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.Error" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Specifies an error that holds all information about the problem found in the annotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>Path</em>) – Path of the file.</p></li>
+<li><p><strong>error_type</strong> (<a class="reference internal" href="#acheck.checking.error.ErrorType" title="acheck.checking.error.ErrorType"><em>ErrorType</em></a>) – Specifies the type of the error.</p></li>
+<li><p><strong>check_id</strong> (<em>int</em>) – To identify the error by check.</p></li>
+<li><p><strong>line_number</strong> (<em>int</em>) – In which line did the error occur. Defaults to “-1”, if the error cannot be assigned to a line.</p></li>
+<li><p><strong>incorrect_sequence</strong> (<a class="reference internal" href="#acheck.checking.error.Sequence" title="acheck.checking.error.Sequence"><em>Sequence</em></a>) – Specifies the character sequence that might be wrong. Defaults to “None”, if there is no sequence.</p></li>
+<li><p><strong>fixes</strong> (<em>List</em><em>[</em><a class="reference internal" href="#acheck.checking.error.Fix" title="acheck.checking.error.Fix"><em>Fix</em></a><em>]</em>) – A list of fix objects that can be used to correct the error.</p></li>
+<li><p><strong>error_level</strong> (<a class="reference internal" href="#acheck.checking.error.ErrorLevel" title="acheck.checking.error.ErrorLevel"><em>ErrorLevel</em></a>) – Specifies the error level. Defaults to “ErrorLevel.Error”.</p></li>
+<li><p><strong>advice</strong> (<em>str</em>) – A specific message that describes the error in more detail and contains important information. It is usually generated automatically based on all other attributes.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checking.error.Error.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/error.html#Error.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.Error.to_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the error object as dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorLevel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">ErrorLevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/error.html#ErrorLevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.ErrorLevel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
+<p>Different error levels enable the division of errors into two groups</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorLevel.Error">
+<span class="sig-name descname"><span class="pre">Error</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#acheck.checking.error.ErrorLevel.Error" title="Permalink to this definition"></a></dt>
+<dd><p>Errors are serious problems that require direct intervention to keep the program running.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorLevel.Warning">
+<span class="sig-name descname"><span class="pre">Warning</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#acheck.checking.error.ErrorLevel.Warning" title="Permalink to this definition"></a></dt>
+<dd><p>Warnings are displayed, but they do not cause direct interference and do not cancel the program</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">ErrorType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/error.html#ErrorType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.ErrorType" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>All different error types that a check can display</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.IllegalCSVFile">
+<span class="sig-name descname"><span class="pre">IllegalCSVFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.IllegalCSVFile" title="Permalink to this definition"></a></dt>
+<dd><p>There is an error when opening or reading a csv file</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.IllegalCharacter">
+<span class="sig-name descname"><span class="pre">IllegalCharacter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.IllegalCharacter" title="Permalink to this definition"></a></dt>
+<dd><p>There are symbols in the annotation that are not allowed</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.IllegalDomainDescription">
+<span class="sig-name descname"><span class="pre">IllegalDomainDescription</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.IllegalDomainDescription" title="Permalink to this definition"></a></dt>
+<dd><p>The PDDL description is not correct</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.IllegalExpressionStructure">
+<span class="sig-name descname"><span class="pre">IllegalExpressionStructure</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.IllegalExpressionStructure" title="Permalink to this definition"></a></dt>
+<dd><p>The structure of the expressions does not correspond to the predefined structure of an annotation expression</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.IllegalFile">
+<span class="sig-name descname"><span class="pre">IllegalFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.IllegalFile" title="Permalink to this definition"></a></dt>
+<dd><p>There is an error when opening or reading the file</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.IllegalProblemDescription">
+<span class="sig-name descname"><span class="pre">IllegalProblemDescription</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">13</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.IllegalProblemDescription" title="Permalink to this definition"></a></dt>
+<dd><p>The PDDL description is not correct</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.IllegalSignature">
+<span class="sig-name descname"><span class="pre">IllegalSignature</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.IllegalSignature" title="Permalink to this definition"></a></dt>
+<dd><p>The signature of an action is not correct or marked as correct</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.IllegalTimestampNoNumber">
+<span class="sig-name descname"><span class="pre">IllegalTimestampNoNumber</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.IllegalTimestampNoNumber" title="Permalink to this definition"></a></dt>
+<dd><p>The time slice of an annotation is not a number</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.IllegalTimestampNotAscending">
+<span class="sig-name descname"><span class="pre">IllegalTimestampNotAscending</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.IllegalTimestampNotAscending" title="Permalink to this definition"></a></dt>
+<dd><p>The time stamps of the actions are equal and or not ascending</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.PlanValidationError">
+<span class="sig-name descname"><span class="pre">PlanValidationError</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.PlanValidationError" title="Permalink to this definition"></a></dt>
+<dd><p>An error occurred when validating the plan resulting from the annotation.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.UnknownAction">
+<span class="sig-name descname"><span class="pre">UnknownAction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.UnknownAction" title="Permalink to this definition"></a></dt>
+<dd><p>An action is not defined in the domain</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.UnknownObject">
+<span class="sig-name descname"><span class="pre">UnknownObject</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.UnknownObject" title="Permalink to this definition"></a></dt>
+<dd><p>Another object is not known in the domain</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.ErrorType.WrongSpelling">
+<span class="sig-name descname"><span class="pre">WrongSpelling</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#acheck.checking.error.ErrorType.WrongSpelling" title="Permalink to this definition"></a></dt>
+<dd><p>There a spelling mistake</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checking.error.Fix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">Fix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correct_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#acheck.checking.error.FixCode" title="acheck.checking.error.FixCode"><span class="pre">FixCode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">FixCode.Alert</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/error.html#Fix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.Fix" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An object that holds information about how to fix the error or warning</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>correct_string</strong> (<em>str</em>) – If there is a corrected character sequence, then it can be saved here. Defaults to “None”.</p></li>
+<li><p><strong>fix_code</strong> (<a class="reference internal" href="#acheck.checking.error.FixCode" title="acheck.checking.error.FixCode"><em>FixCode</em></a>) – Specifies the type of fix. Defaults to “FixCode.Alert”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checking.error.FixCode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">FixCode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/error.html#FixCode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.FixCode" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>All different types of fixes which can be proposed as solutions to work with in the tool</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.FixCode.AdaptModel">
+<span class="sig-name descname"><span class="pre">AdaptModel</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#acheck.checking.error.FixCode.AdaptModel" title="Permalink to this definition"></a></dt>
+<dd><p>The model must be adapted</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.FixCode.AddToDict">
+<span class="sig-name descname"><span class="pre">AddToDict</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#acheck.checking.error.FixCode.AddToDict" title="Permalink to this definition"></a></dt>
+<dd><p>The model must be adapted</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.FixCode.Alert">
+<span class="sig-name descname"><span class="pre">Alert</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#acheck.checking.error.FixCode.Alert" title="Permalink to this definition"></a></dt>
+<dd><p>A message is displayed in the tool</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.FixCode.RemoveSequence">
+<span class="sig-name descname"><span class="pre">RemoveSequence</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#acheck.checking.error.FixCode.RemoveSequence" title="Permalink to this definition"></a></dt>
+<dd><p>An incorrect character sequence can be removed</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.FixCode.ReplaceSequence">
+<span class="sig-name descname"><span class="pre">ReplaceSequence</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#acheck.checking.error.FixCode.ReplaceSequence" title="Permalink to this definition"></a></dt>
+<dd><p>An incorrect character sequence can be replaced by a correct one</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checking.error.FixCode.WhitelistSignature">
+<span class="sig-name descname"><span class="pre">WhitelistSignature</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#acheck.checking.error.FixCode.WhitelistSignature" title="Permalink to this definition"></a></dt>
+<dd><p>a special signature of an action is locked as currently correct signature</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checking.error.Sequence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">Sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_sequence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/error.html#Sequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.Sequence" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An object that holds information about the incorrect character sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_index</strong> (<em>int</em>) – Specifies the index at the position of the line where the incorrect character sequence starts. Defaults to “0”.</p></li>
+<li><p><strong>char_sequence</strong> (<em>str</em>) – If there is an incorrect character sequence, then it can be saved here. Defaults to “”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checking.error.build_advice">
+<span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">build_advice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incorrect_sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_level</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/acheck/checking/error.html#build_advice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.build_advice" title="Permalink to this definition"></a></dt>
+<dd><p>Takes error parameters and builds an advice message
+:return str: A nicely formatted message that contains all information about the error.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checking.error.from_dict">
+<span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checking/error.html#from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Takes an error as dictionary and creates an error object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>error_dict</strong> – Error object as dictionary.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Error object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checking.error.group_errors_by_line">
+<span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">group_errors_by_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/acheck/checking/error.html#group_errors_by_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.group_errors_by_line" title="Permalink to this definition"></a></dt>
+<dd><p>Group errors by line
+:param error_list: List of errors
+:return: A dictionary that contains all errors by line. It has each line as a key and the values are all associated errors in a list.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checking.error.group_errors_inline">
+<span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">group_errors_inline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/acheck/checking/error.html#group_errors_inline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.group_errors_inline" title="Permalink to this definition"></a></dt>
+<dd><p>Errors are grouped by line. If the sequences of the errors overlap, they are included in the same group.
+:param List[Error] errors: List of errors
+:return: A dictionary that contains all groups. It has the start index and the end index of each group as a key and the values are then all associated errors in a list.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="acheck.checking.error.logger">
+<span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">acheck.checking.error</span> <span class="pre">(WARNING)&gt;</span></em><a class="headerlink" href="#acheck.checking.error.logger" title="Permalink to this definition"></a></dt>
+<dd><p>Register logging</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checking.error.read_list">
+<span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">read_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checking/error.html#read_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.read_list" title="Permalink to this definition"></a></dt>
+<dd><p>Reads a error list file from json and creates a list of error objects
+:param file_name: Path of the file
+:return: List of error objects
+:rtype: List[Error] or None, if there is an error with the list.
+:raises IOError: If an error occurred during reading the error list file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checking.error.write_groups">
+<span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">write_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/acheck/checking/error.html#write_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.write_groups" title="Permalink to this definition"></a></dt>
+<dd><p>Takes a list of errors and writes the json groups file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> – Path of the file</p></li>
+<li><p><strong>error_list</strong> – List of error objects</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checking.error.write_list">
+<span class="sig-prename descclassname"><span class="pre">acheck.checking.error.</span></span><span class="sig-name descname"><span class="pre">write_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/acheck/checking/error.html#write_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checking.error.write_list" title="Permalink to this definition"></a></dt>
+<dd><p>Writes a list of errors into a json file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> – Path of the file</p></li>
+<li><p><strong>error_list</strong> – List of error objects</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="acheck.html" class="btn btn-neutral float-left" title="Full list" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="acheck.checks.html" class="btn btn-neutral float-right" title="acheck.checks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Felix Gratzkowski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -9,13 +9,15 @@ toml = "~=0.10.2"
 pddlpy = "~=0.3.3"
 antlr4-python3-runtime = "==4.9.3"
 requests = "==2.31.0"
-docutils = "==0.20.1"
+acheck = {editable = true, path = "."}
 
 [dev-packages]
 twine = "~=4.0.2"
 setuptools = "~=67.7.2"
 pytest = "==7.3.1"
 build = "*"
+sphinx-rtd-theme = "*"
+sphinx = "*"
 
 [requires]
 python_version = "3.8"
