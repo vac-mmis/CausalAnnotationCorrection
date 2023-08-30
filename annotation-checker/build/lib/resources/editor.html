@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Annotation Checker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="editor.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+          integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="ace/ext-beautify.js" type="text/javascript" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ace-builds@1.22.0/css/ace.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+
+<script>$(() => {
+
+
+        "use strict";
+
+        let viewController = {};
+        viewController["control"] = {};
+        viewController["element"] = {};
+        viewController["data"] = {};
+        viewController["active"] = {};
+
+        viewController["editor"] = {};
+        viewController["options"] = {};
+        viewController.control["unsavedChanges"] = false;
+        viewController.control["lastUpdate"] = 0;
+        viewController.control["wordList"] = [];
+
+        viewController.control["activeAnnotationIndex"] = 0;
+        viewController.control["activeModelIndex"] = 0;
+        viewController.control["options"] = {};
+
+        viewController.options["logsInfo"] = {};
+        viewController.options["detailsInfo"] = {};
+
+        viewController.element["annotation"] = document.getElementById("editor-lines-annotation");
+
+        viewController.editor["annotation"] = ace.edit(document.getElementById("annotation-editor"));
+        viewController.editor["annotationSessions"] = [];
+        viewController.editor["annotationMarker"] = {};
+
+        viewController.editor["model"] = ace.edit(document.getElementById("model-editor"));
+        viewController.editor["modelSessions"] = [];
+        viewController.editor["modelMarker"] = {};
+
+        viewController.element["options"] = document.getElementById("options-wrapper");
+        viewController.element["errorNumberBadges"] = document.getElementsByClassName("error-number-badge");
+        viewController.element["checkActiveCheckboxes"] = document.getElementsByClassName("check-active-checkbox");
+        viewController.element["tabNavAnnotation"] = document.getElementById("tab-nav-annotation");
+        viewController.element["tabNavAnnotationDropdown"] = document.getElementById("tab-nav-annotation-dropdown");
+        viewController.element["tabNavModel"] = document.getElementById("tab-nav-model");
+        viewController.element["tabNavModelDropdown"] = document.getElementById("tab-nav-model-dropdown");
+        viewController.element["output"] = document.getElementById("output-wrapper");
+        viewController.element["logBadges"] = document.getElementsByClassName("log-badge");
+        viewController.element["logsInfo"] = document.getElementsByClassName("logs-info");
+        viewController.element["detailsInfo"] = document.getElementsByClassName("details-info");
+        viewController.element["autoSave"] = document.getElementById("flexSwitchAutoSave");
+        viewController.element["wordList"] = document.getElementById("wordList");
+
+        viewController.data["annotation"] = [];
+        viewController.data["model"] = [];
+        viewController.data["check"] = [];
+
+
+        viewController.active["fileName"] = "";
+        viewController.active["errorList"] = [];
+        viewController.active["errorListModel"] = [];
+        viewController.active["groupList"] = [];
+        viewController.active["groupListModel"] = [];
+        viewController.active["failedCheckID"] = -1;
+        viewController.active["activeLineIndex"] = -1;
+        viewController.active["annotationCursor"] = {column: 0, row: 0};
+        viewController.active["modelCursor"] = {column: 0, row: 0};
+
+        //getData for the first time
+        try {
+            getNewData(viewController);
+
+            check();
+
+
+        } catch (error) {
+            showModal("Failed getting data from the server", error.stack);
+        }
+
+
+        function update(viewController) {
+            if (viewController.control.unsavedChanges) {
+                return;
+            }
+            let activeAnnotationIndex = viewController.control.activeAnnotationIndex;
+            let activeAnnotationData = viewController.data.annotation[activeAnnotationIndex];
+
+
+            let activeModelIndex = viewController.control.activeModelIndex;
+            let activeModelData = viewController.data.model[activeModelIndex];
+
+            let modelGroupLists = activeAnnotationData["group_lists_model"];
+
+            viewController.element.wordList.innerHTML = "";
+            for (let i of viewController.control.wordList) {
+                addWord(i);
+            }
+
+
+            viewController.active.activeLineIndex = activeAnnotationData["line_limit"];
+            viewController.active.fileName = activeAnnotationData["file"];
+
+
+            viewController.active.groupList = activeAnnotationData["groups"];
+            viewController.active.groupListModel = modelGroupLists[activeModelIndex];
+
+            viewController.active.errorList = activeAnnotationData["errors"];
+
+            viewController.active.errorListModel = collectDeepestElements(viewController.active.groupListModel);
+
+            viewController.active.failedCheckID = activeAnnotationData["failed_check_id"];
+
+
+            if (viewController.data.model.length !== viewController.editor.modelSessions.length) {
+                viewController.editor.modelSessions = [];
+                for (let i = 0; i < viewController.data.model.length; i++) {
+                    let session = ace.createEditSession("");
+                    session.setMode("ace/mode/pddl");
+
+                    session.setValue(viewController.data.model[i]["text"]);
+                    viewController.editor.model.setSession(session);
+
+                    viewController.editor.modelSessions.push(session);
+                }
+
+            }
+            viewController.editor.model.setSession(viewController.editor.modelSessions[activeModelIndex]);
+            viewController.editor.model.setValue(viewController.data.model[activeModelIndex]["text"], -1);
+
+
+            if (viewController.data.annotation.length !== viewController.editor.annotationSessions.length) {
+                viewController.editor.annotationSessions = [];
+                for (let i = 0; i < viewController.data.annotation.length; i++) {
+                    let session = ace.createEditSession("");
+                    session.setMode("ace/mode/text");
+
+                    session.setValue(viewController.data.annotation[i]["text"]);
+                    viewController.editor.annotation.setSession(session);
+
+                    viewController.editor.annotationSessions.push(session);
+                }
+
+            }
+
+
+            viewController.editor.annotation.setSession(viewController.editor.annotationSessions[activeAnnotationIndex]);
+            viewController.editor.annotation.setValue(viewController.data.annotation[activeAnnotationIndex]["text"], -1);
+
+
+            markLines(viewController.editor.annotation, viewController.editor.annotationMarker, viewController.active.groupList);
+            markLines(viewController.editor.model, viewController.editor.modelMarker, viewController.active.groupListModel);
+
+
+            viewController.editor.annotation.moveCursorToPosition(viewController.active.annotationCursor);
+            viewController.editor.model.moveCursorToPosition(viewController.active.modelCursor);
+
+            if (activeAnnotationData.locked) {
+                viewController.editor.annotation.setReadOnly(true);
+                viewController.editor.annotation.container.style.backgroundColor = "#f7f7f7";  // Beispielhafte Farbe
+                viewController.editor.annotation.container.setAttribute("title", "This editor is locked");
+            } else {
+
+                viewController.editor.annotation.setReadOnly(false);
+                viewController.editor.annotation.container.style.backgroundColor = "";  // Beispielhafte Farbe
+                viewController.editor.annotation.container.removeAttribute("title");
+
+            }
+
+
+            if (activeModelData.locked) {
+                viewController.editor.model.setReadOnly(true);
+                viewController.editor.model.container.style.backgroundColor = "#f7f7f7";  // Beispielhafte Farbe
+                viewController.editor.model.container.setAttribute("title", "This editor is locked");
+
+            } else {
+                viewController.editor.model.setReadOnly(false);
+                viewController.editor.model.container.style.backgroundColor = "";  // Beispielhafte Farbe
+                viewController.editor.model.container.removeAttribute("title");
+
+            }
+
+
+            showOptions(viewController);
+
+            loadOptionsState(viewController);
+
+            setErrorCountsByCheck(viewController);
+
+            createTabs(viewController.data.annotation, viewController.element.tabNavAnnotation, viewController.element.tabNavAnnotationDropdown);
+            createTabs(viewController.data.model, viewController.element.tabNavModel, viewController.element.tabNavModelDropdown);
+
+
+            colorTabs(viewController.data.annotation, viewController.data.model, viewController.element.tabNavModel, viewController.element.tabNavAnnotation, viewController.active.errorList);
+
+
+            setActiveOutline(activeAnnotationIndex, viewController.element.tabNavAnnotation);
+            setActiveOutline(activeModelIndex, viewController.element.tabNavModel);
+
+            lockLines(viewController);
+
+
+            viewController.element.output.innerHTML = "";
+        }
+
+
+        async function getNewData(viewController) {
+
+
+            let lastUpdate = viewController.control.lastUpdate;
+
+            let response = await fetch("getdata=" + lastUpdate);
+
+            if (response.status === 502) {
+                //server closed e.g. timeout
+                await getNewData(viewController);
+            } else if (response.status !== 200) {
+
+                // Reconnect in one second
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                await getNewData(viewController);
+            } else {
+
+                let data = await response.json();
+
+                viewController.data.annotation = data["annotations"];
+
+                viewController.data.model = data["models"];
+                viewController.data.check = data["checks"];
+
+
+                viewController.control.lastUpdate = data["last_update"];
+
+                viewController.control.wordList = data["word_list"];
+
+
+                update(viewController);
+
+                await getNewData(viewController);
+
+
+            }
+        }
+
+        $(".form-check-input").on("click", (e) => {
+            if (e.target.checked) {
+                e.target.value = "off";
+            } else {
+                e.target.value = "on";
+            }
+        });
+
+
+        /** Load autosave settings*/
+        if (localStorage.getItem("autoSave") === null) {
+            localStorage.setItem("autoSave", false);
+            viewController.element.autoSave.removeAttribute("checked");
+        }
+
+        if (JSON.parse(localStorage.getItem("autoSave"))) {
+            viewController.element.autoSave.setAttribute("checked", true);
+
+        } else {
+            viewController.element.autoSave.removeAttribute("checked");
+
+        }
+
+
+        /** Click Events */
+
+        $(".options-wrapper").on("click", (e) => {
+
+
+            Loading.info("unsaved");
+            viewController.control.unsavedChanges = true;
+
+            if (e.target.classList.contains("btn-save-options")) {
+
+
+                e.preventDefault();
+                saveRequest(viewController);
+                check();
+            }
+
+            if (e.target.classList.contains("button-info") || e.target.classList.contains("button-detail")) {
+
+                saveOptionsState(viewController);
+            }
+
+            if (e.target.classList.contains("check-active-checkbox")) {
+
+                setErrorCountsByCheck(viewController);
+                return;
+            }
+
+            if (e.target.classList.contains("error-number-badge")) {
+
+
+                if (viewController.data.check[parseInt(e.target.dataset.id)]["name"] !== "PDDLCheck") {
+                    scrollIntoError(viewController.editor.annotation, viewController.active.errorList, parseInt(e.target.dataset.id));
+                } else {
+                    scrollIntoError(viewController.editor.model, viewController.active.errorListModel, parseInt(e.target.dataset.id));
+                }
+
+
+            }
+        });
+
+
+        /** Click the save button to save changes made by editing the file */
+        $("#btn-check").on("click", async (e) => {
+            e.preventDefault();
+
+
+            viewController.element.output.innerHTML = "";
+
+
+            await saveRequest(viewController);
+            await check();
+
+        });
+
+        $("#btn-save").on("click", async (e) => {
+            e.preventDefault();
+
+
+            await saveRequest(viewController);
+
+
+
+        });
+
+        $("#btn-show-all-errors").on("click", async (e) => {
+            e.preventDefault();
+
+
+            viewController.element.output.innerHTML = "";
+
+
+            showErrors(viewController.active.errorList, viewController.element.output, viewController.data.annotation[viewController.control.activeAnnotationIndex].locked, false, viewController.active.errorList);
+
+
+        });
+
+
+        /** Click on all button to show all errors */
+
+
+        let annotationTimer;
+
+
+        viewController.editor.annotation.textInput.getElement().addEventListener("keydown", key => {
+            if (key.key === "ArrowUp"
+                || key.key === "ArrowDown"
+                || key.key === "ArrowLeft"
+                || key.key === "ArrowRight") {
+                return;
+            }
+            Loading.info("unsaved");
+            viewController.control.unsavedChanges = true;
+
+
+            if (JSON.parse(localStorage.getItem("autoSave")) === true) {
+
+                clearTimeout(annotationTimer);
+                annotationTimer = setTimeout(async () => {
+                    await saveRequest(viewController);
+                    await check();
+
+                }, 1000);
+
+            }
+        });
+        viewController.editor.model.textInput.getElement().addEventListener("keydown", key => {
+            if (key.key === "ArrowUp"
+                || key.key === "ArrowDown"
+                || key.key === "ArrowLeft"
+                || key.key === "ArrowRight") {
+                return;
+            }
+            Loading.info("unsaved");
+            viewController.control.unsavedChanges = true;
+
+
+            if (JSON.parse(localStorage.getItem("autoSave")) === true) {
+
+                clearTimeout(annotationTimer);
+                annotationTimer = setTimeout(async () => {
+                    await saveRequest(viewController);
+                    await check();
+
+                }, 1000);
+
+            }
+        });
+
+        viewController.editor.annotation.on("gutterclick", (e) => {
+            if (e.domEvent.target.classList.contains("ace_gutter-cell")) {
+
+                if (viewController.editor.annotation.getReadOnly() === true) {
+                    return;
+                }
+                viewController.active.activeLineIndex = e.getDocumentPosition().row;
+
+
+                saveRequest(viewController);
+                update(viewController);
+
+            }
+        });
+
+        viewController.editor.annotation.on("click", (e) => {
+
+            let position = e.getDocumentPosition();
+
+
+            let markerArray = Object.entries(viewController.editor.annotation.getSession().getMarkers()).filter(([id, marker]) => marker.clazz === "error" || marker.clazz === "warning")
+                .filter(([id, marker]) =>
+                    position.row <= marker.range.end.row
+                    && position.row >= marker.range.start.row
+                    && (position.row < marker.range.end.row && position.column >= marker.range.start.column
+                        || (position.row === marker.range.end.row && position.column >= marker.range.start.column && position.column <= marker.range.end.column))
+                );
+
+
+            if (markerArray.length !== 1) {
+                return;
+            }
+
+
+            let markerID = markerArray[0][0];
+            let marker = markerArray[0][1];
+
+
+            let dataAttributes = viewController.editor.annotationMarker[markerID].split(",");
+
+
+            let line = dataAttributes[0];
+            let id = dataAttributes[1] + "," + dataAttributes[2];
+
+
+            let errors = viewController.active.groupList[line][id];
+            let errorList = viewController.active.errorList;
+
+            showErrors(errors, viewController.element.output, viewController.data.annotation[viewController.control.activeAnnotationIndex].locked, false, errorList);
+
+
+        });
+
+        viewController.editor.model.on("click", (e) => {
+
+            let position = e.getDocumentPosition();
+
+
+            let markerArray = Object.entries(viewController.editor.model.getSession().getMarkers()).filter(([id, marker]) => marker.clazz === "error" || marker.clazz === "warning")
+                .filter(([id, marker]) =>
+                    position.row <= marker.range.end.row
+                    && position.row >= marker.range.start.row
+                    && (position.row < marker.range.end.row && position.column >= marker.range.start.column
+                        || (position.row === marker.range.end.row && position.column >= marker.range.start.column && position.column <= marker.range.end.column))
+                );
+
+
+            if (markerArray.length !== 1) {
+                return;
+            }
+
+            let markerID = markerArray[0][0];
+
+            let marker = markerArray[0][1];
+
+
+            let dataAttributes = viewController.editor.modelMarker[markerID].split(",");
+
+
+            let line = dataAttributes[0];
+            let id = dataAttributes[1] + "," + dataAttributes[2];
+            let errors = viewController.active.groupListModel[line][id];
+            let errorList = viewController.active.errorListModel;
+            showErrors(errors, viewController.element.output, viewController.data.model[viewController.control.activeModelIndex].locked, true, errorList);
+
+
+        });
+
+        /** Changing active annotation*/
+        $("#tab-nav-annotation").on("click", async (e) => {
+            await saveRequest(viewController);
+            console.log(e.target);
+            viewController.control.activeAnnotationIndex = e.target.dataset.id;
+
+
+            await update(viewController);
+        });
+
+        $("#tab-nav-annotation-dropdown").on("click", async (e) => {
+
+            if (e.target.classList.contains("nav-link")) {
+                await saveRequest(viewController);
+
+                viewController.control.activeAnnotationIndex = e.target.dataset.id;
+
+
+                await update(viewController);
+            }
+        });
+
+        $("#tab-nav-model-dropdown").on("click", async (e) => {
+
+            if (e.target.classList.contains("nav-link")) {
+                await saveRequest(viewController);
+
+                viewController.control.activeModelIndex = e.target.dataset.id;
+
+
+                await update(viewController);
+            }
+        });
+
+        /** Changing active model*/
+        $("#tab-nav-model").on("click", async (e) => {
+            await saveRequest(viewController);
+            viewController.control.activeModelIndex = e.target.dataset.id;
+
+
+            await update(viewController);
+        });
+
+        /** Change auto save */
+        $("#flexSwitchAutoSave").on("change", (e) => {
+
+            e.preventDefault();
+
+            let checked = e.target.value === "on";
+
+            if (checked) {
+
+                localStorage.setItem("autoSave", false);
+            } else {
+
+                localStorage.setItem("autoSave", true);
+                saveRequest(viewController);
+            }
+
+        });
+
+
+        async function onFixClick(errorList, target) {
+
+
+            let errorId = target.dataset.errorId;
+
+            let fixButtonData = target.dataset.fixId.split(":");
+            let fixId = fixButtonData[0];
+
+
+            let custom = fixButtonData.length === 2;
+
+
+            if (errorList[errorId]["fixes"][fixId][1] === "AdaptModel") {
+                let templateToast = document.getElementById("template-toast");
+                templateToast.setAttribute("data-bs-animation", "true");
+                templateToast.setAttribute("data-bs-autohide", "true");
+                let toastBody = templateToast.getElementsByClassName("toast-body")[0];
+
+                toastBody.innerText = errorList[errorId]["fixes"][fixId][0];
+                $("#template-toast").toast("show");
+                await navigator.clipboard.writeText(errorList[errorId]["fixes"][fixId][0]);
+                update(viewController);
+                return;
+            }
+
+            if (errorList[errorId]["fixes"][fixId][1] === "Alert") {
+                let templateToast = document.getElementById("template-toast");
+                templateToast.setAttribute("data-bs-animation", "false");
+                templateToast.setAttribute("data-bs-autohide", "false");
+
+                let toastBody = templateToast.getElementsByClassName("toast-body")[0];
+
+                toastBody.innerText = errorList[errorId]["fixes"][fixId][0];
+                $("#template-toast").toast("show");
+                await navigator.clipboard.writeText(errorList[errorId]["fixes"][fixId][0]);
+                update(viewController);
+                return;
+            }
+
+
+            let fixSame = false;
+            if (target.classList.contains("button-fix-same")) {
+                fixSame = true;
+            }
+
+
+            let customData = null;
+            if (custom) {
+                let customInputElement = e.target.parentElement.children[1].classList.contains("custom-input") ? e.target.parentElement.children[1] : null;
+
+
+                if (customInputElement === null) {
+                    return;
+                }
+
+                if (customInputElement.value === "" || customInputElement.value === null) {
+                    return;
+                }
+                customData = customInputElement.value;
+            }
+
+
+
+            let response = await fetch("/fix", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    "annotation_index": viewController.control.activeAnnotationIndex,
+                    "error_id": errorId,
+                    "fix_id": fixId,
+                    "fix_all": fixSame,
+                    "custom": customData
+                })
+            }).catch(function () {
+                let errorModal = new bootstrap.Modal(document.getElementById('myModal'),);
+                errorModal.show();
+            });
+            document.getElementById("output-wrapper").innerHTML = "";
+            await check();
+
+        }
+
+        /** Manage fixing */
+        $(".output-wrapper").on("click", async (e) => {
+
+
+            let classList = e.target.classList;
+
+
+            e.preventDefault();
+
+            if (classList.contains("button-fix-same") || classList.contains("button-fix-error")) {
+
+                let isModel = e.target.dataset.errorIsmodel === "true";
+
+                let errors = Array.from(viewController.active.errorList);
+
+                if (isModel) {
+                    errors = Array.from(viewController.active.errorListModel);
+                }
+
+
+                await onFixClick(errors, e.target);
+
+
+            }
+        });
+
+        $("#word-list-add").on("click", (e) => {
+            addWord();
+            saveRequest(viewController);
+            update(viewController);
+        });
+
+        $("#word-list-delete").on("click", (e) => {
+            deleteSelectedWords();
+            saveRequest(viewController);
+            update(viewController);
+        });
+
+        $("#word-list-close").on("click", (e) => {
+            closeMenu();
+        });
+
+    }
+);
+
+
+</script>
+
+<div class="container-fluid">
+    <div id="overlay" class="overlay">
+        <div class="container" style="width: 30%">
+            <div class="card card-sm mt-5">
+                <div class="card-body">
+                    <h6 class="col-auto m-2">Dictionary:</h6>
+
+                    <ul id="wordList" class="list-group">
+                        <!-- Hier werden die Wörter dynamisch eingefügt -->
+                    </ul>
+                    <div class="row my-2">
+                        <div class="d-flex align-items-center">
+
+                            <input id="newWordInput" class="form-control form-control-sm mx-1" type="text"
+                                   placeholder="New word" style="width: 10rem">
+
+                            <button id="word-list-add" class="btn btn-sm btn-success ">Add
+                            </button>
+                            <button id="word-list-delete" class="btn btn-sm btn-danger mx-1">Remove
+                            </button>
+                            <button id="word-list-close" class="btn btn-sm btn-secondary ">Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h6 class="modal-title">Request failed</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body overflow-scroll">
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Ok</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="position-fixed top-0 end-50 p-3" style="z-index: 11">
+    <div class="toast" id="template-toast">
+        <div class="toast-header">
+            <strong class="me-auto"><i class="bi bi-clipboard"></i> Copied to clipboard:</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+
+    <nav class="navbar navbar-expand-lg navbar-light order-lg-0">
+        <div class="container-fluid">
+            <a class="navbar-brand">Annotation Checker</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                    <li class="nav-item">
+                        <a id="lbl-ready" class="nav-link text-success">ready</a> <!rdy-lbl-ready>
+                    </li>
+                    <li class="nav-item always-visible">
+                        <a id="btn-check" type="button" class="nav-link">
+                            Check
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a id="btn-save" type="button" class="nav-link">
+                            Save
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a id="btn-show-all-errors" type="button" class="nav-link">
+                            Show All
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a id="btn-configure-wordlist" type="button" class="nav-link" onclick="openMenu()">
+                            Dictionary
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+                        <div id="loader"
+                             class="nav-item spinner-border spinner-border-sm text-secondary visually-hidden"
+                             role="status">
+                        </div>
+                    </li>
+                </ul>
+
+
+                <form class="form-inline d-flex mx-5">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchAutoSave">
+                        <label class="form-check-label" for="flexSwitchAutoSave">Autosave</label>
+                    </div>
+
+
+                </form>
+
+
+                <form class="d-flex">
+                    <a href="https://www.uni-rostock.de/" target="_blank">
+                        <img src="universitaet_rostock_logo.jpg" style="height: 50px" alt="">
+                    </a>
+
+                </form>
+
+                <form class="d-flex">
+                    <a href="https://vac.uni-rostock.de/" target="_blank">
+                        <img src="vac_logo.png" style="height: 50px" alt="">
+                    </a>
+
+
+                </form>
+                <form class="d-flex">
+                    <i class="btn btn-lg bi bi-info-circle" data-bs-content="This tool was created by Felix Gratzkowski,  student assistant at the chair of
+                        Mobile Multimedia Information Systems, part of the Institute for Visual & Analytic Computing,
+                        at the Faculty of Informatics and Electrical Engineering of the University of Rostock."
+                       data-bs-toggle="popover"
+                       data-bs-placement="bottom">
+
+                    </i>
+                </form>
+
+            </div>
+
+        </div>
+    </nav>
+
+
+    <div class="row">
+
+        <div class="col col-xl-9 order-lg-1">
+            <div class="row">
+
+                <!annotation-editor>
+                <div class="col-5 g-2">
+                    <div class="container m-0 p-0">
+                        <div class="row g-0" style="background-color: #f5f5f5">
+
+                            <h6 class="col-auto m-2">Annotations:</h6>
+                            <div class="col nav-container">
+                                <ul id="tab-nav-annotation" class="nav nav-tabs"></ul>
+                            </div>
+
+
+                            <div class="dropdown col-auto">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuTabsAnnotation"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuTabsAnnotation"
+                                    id="tab-nav-annotation-dropdown">
+
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div id="annotation-editor" class="editor">
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!model-editor>
+                <div class="col g-2">
+                    <div class="container m-0 p-0">
+                        <div class="row g-0" style="background-color: #f5f5f5">
+                            <h6 class="col-auto m-2">Models:</h6>
+
+
+                            <div class="col nav-container">
+                                <ul id="tab-nav-model" class="nav nav-tabs"></ul>
+                            </div>
+                            <div class="dropdown col-auto">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenuTabsModel"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuTabsModel"
+                                    id="tab-nav-model-dropdown">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="model-editor" class="editor">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+
+                <!output>
+
+
+                <div class="col-xl g-2"> <!--- > abstand verringeewrn<-->
+                    <div class="row g-0" style="background-color: #f5f5f5">
+                        <h6 class="col-auto m-2">Output:</h6>
+
+
+                        <div class="col container-fluid p-0">
+                            <table>
+                                <tr>
+                                    <div id="output-wrapper" class="output-wrapper m-0 p-2"></div>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!options>
+        <div class="col-xl-3 order-lg-2 g-2">
+            <div class="container p-0">
+                <div id="options-wrapper" class="options-wrapper p-1"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    document.getElementById("overlay").addEventListener("click", (event) => {
+        if (event.target === document.getElementById('overlay')) {
+            closeMenu();
+        }
+    });
+
+
+    function openMenu() {
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closeMenu() {
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function deleteSelectedWords() {
+        let wordList = document.getElementById('wordList');
+        let selectedWords = wordList.getElementsByClassName('list-group-item active');
+
+        while (selectedWords.length > 0) {
+            selectedWords[0].remove();
+        }
+    }
+
+
+    function addWord(word) {
+        let newWordInput = document.getElementById('newWordInput');
+        let wordList = document.getElementById('wordList');
+        let newWord = "";
+        if (typeof word === "undefined") {
+            newWord = newWordInput.value.trim();
+        } else {
+            newWord = word;
+        }
+
+
+        if (newWord !== '') {
+            let listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerText = newWord;
+            listItem.addEventListener('click', function () {
+                this.classList.toggle('active');
+            });
+            wordList.appendChild(listItem);
+            newWordInput.value = '';
+        }
+    }
+
+    function addWords(wordsToAdd) {
+        let wordList = document.getElementById('wordList');
+
+
+        wordsToAdd.forEach(function (word) {
+            let listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerText = word;
+            listItem.addEventListener('click', function () {
+                this.classList.toggle('active');
+            });
+            wordList.appendChild(listItem);
+        });
+    }
+
+
+    //ACE EDITOR
+    const editor = ace.edit(document.getElementById("model-editor"));
+    editor.setTheme("ace/theme/textmate");
+
+    editor.getSession().setMode("ace/mode/pddl");
+    editor.$blockScrolling = Infinity;
+    editor.setFontSize("14px");
+
+    //ACE EDITOR
+    const annoEditor = ace.edit(document.getElementById("annotation-editor"));
+    annoEditor.setTheme("ace/theme/textmate");
+
+    annoEditor.getSession().setMode("ace/mode/text");
+    annoEditor.$blockScrolling = Infinity;
+    annoEditor.setFontSize("14px");
+
+    //annoEditor.container.style.lineHeight = 1.5;
+
+
+    $(document).ready(function () {
+        const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl);
+        });
+
+
+    });
+
+
+</script>
+<script type="text/javascript" src="editor.js"></script>
+
+</body>
+
+
+</html>

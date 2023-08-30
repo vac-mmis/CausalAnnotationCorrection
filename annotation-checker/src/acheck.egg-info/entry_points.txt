@@ -1,0 +1,2 @@
+[console_scripts]
+acheck = acheck.__main__:main

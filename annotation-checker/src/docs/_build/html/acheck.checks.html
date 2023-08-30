@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>acheck.checks &mdash; CausalAnnotationCorrection 0.0.5 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=0a554088"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="acheck.checking.check_interface" href="acheck.checking.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CausalAnnotationCorrection
+          </a>
+              <div class="version">
+                0.0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acheck.html">Full list</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="acheck.html#by-module">By module</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="acheck.checking.html">acheck.checking.check_interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="acheck.checking.html#module-acheck.checking.error">acheck.checking.error</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">acheck.checks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-acheck.checks.file">acheck.checks.file</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.file.CSVFormatCheck"><code class="docutils literal notranslate"><span class="pre">CSVFormatCheck</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.file.CharacterCheck"><code class="docutils literal notranslate"><span class="pre">CharacterCheck</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.file.ReadFileCheck"><code class="docutils literal notranslate"><span class="pre">ReadFileCheck</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-acheck.checks.objects">acheck.checks.objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.objects.ActionCheck"><code class="docutils literal notranslate"><span class="pre">ActionCheck</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.objects.WorldObjectsCheck"><code class="docutils literal notranslate"><span class="pre">WorldObjectsCheck</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.objects.suppress_stdout"><code class="docutils literal notranslate"><span class="pre">suppress_stdout()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-acheck.checks.signature">acheck.checks.signature</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.signature.SignatureCheck"><code class="docutils literal notranslate"><span class="pre">SignatureCheck</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-acheck.checks.spelling">acheck.checks.spelling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.spelling.SpellCheck"><code class="docutils literal notranslate"><span class="pre">SpellCheck</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-acheck.checks.structure">acheck.checks.structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.structure.ExpressionStructureCheck"><code class="docutils literal notranslate"><span class="pre">ExpressionStructureCheck</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.structure.TimeAscendingCheck"><code class="docutils literal notranslate"><span class="pre">TimeAscendingCheck</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.structure.TimeIsNumberCheck"><code class="docutils literal notranslate"><span class="pre">TimeIsNumberCheck</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-acheck.checks.validating">acheck.checks.validating</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.validating.PDDLSyntaxCheck"><code class="docutils literal notranslate"><span class="pre">PDDLSyntaxCheck</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.validating.PlanValidationCheck"><code class="docutils literal notranslate"><span class="pre">PlanValidationCheck</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.validating.get_time_from_block"><code class="docutils literal notranslate"><span class="pre">get_time_from_block()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.validating.parse_stderr"><code class="docutils literal notranslate"><span class="pre">parse_stderr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.validating.parse_stdout"><code class="docutils literal notranslate"><span class="pre">parse_stdout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.validating.plan_validation"><code class="docutils literal notranslate"><span class="pre">plan_validation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acheck.checks.validating.use_validator"><code class="docutils literal notranslate"><span class="pre">use_validator()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="acheck.html#acheck.checkers.register_checks"><code class="docutils literal notranslate"><span class="pre">register_checks()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CausalAnnotationCorrection</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="acheck.html">Full list</a></li>
+      <li class="breadcrumb-item active">acheck.checks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/acheck.checks.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="acheck-checks">
+<h1>acheck.checks<a class="headerlink" href="#acheck-checks" title="Permalink to this heading"></a></h1>
+<section id="module-acheck.checks.file">
+<span id="acheck-checks-file"></span><h2>acheck.checks.file<a class="headerlink" href="#module-acheck.checks.file" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.file.CSVFormatCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.file.</span></span><span class="sig-name descname"><span class="pre">CSVFormatCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/file.html#CSVFormatCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.file.CSVFormatCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Checks whether the given annotation file has a valid csv format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><dl class="simple">
+<dt>sniffer_size:</dt><dd><p>Size parameter for reading the file and determine the csv dialect (e.g. “file_size=4096”)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>columns:</dt><dd><p>Number of columns in the csv file</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>quotechar:</dt><dd><p>Quotechar of the csv file</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>delimiter:</dt><dd><p>Delimiter char of the csv file</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.file.CSVFormatCheck.check_csv_structure">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_csv_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sniffer_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quotechar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'|'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/file.html#CSVFormatCheck.check_csv_structure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.file.CSVFormatCheck.check_csv_structure" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.file.CSVFormatCheck.columns">
+<span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#acheck.checks.file.CSVFormatCheck.columns" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.file.CSVFormatCheck.delimiter">
+<span class="sig-name descname"><span class="pre">delimiter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">','</span></em><a class="headerlink" href="#acheck.checks.file.CSVFormatCheck.delimiter" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.file.CSVFormatCheck.quotechar">
+<span class="sig-name descname"><span class="pre">quotechar</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'|'</span></em><a class="headerlink" href="#acheck.checks.file.CSVFormatCheck.quotechar" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.file.CSVFormatCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/file.html#CSVFormatCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.file.CSVFormatCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.file.CSVFormatCheck.sniffer_size">
+<span class="sig-name descname"><span class="pre">sniffer_size</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1024</span></em><a class="headerlink" href="#acheck.checks.file.CSVFormatCheck.sniffer_size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.file.CharacterCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.file.</span></span><span class="sig-name descname"><span class="pre">CharacterCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/file.html#CharacterCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.file.CharacterCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Checks if there are any characters that are not allowed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><dl class="simple">
+<dt>regex_characters:</dt><dd><p>The regular expression that matches all allowed characters for the whole annotation</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>regex_time:</dt><dd><p>The regular expression that matches all allowed characters plus the punctuation mark period</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.file.CharacterCheck.check_characters">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_characters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_characters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/file.html#CharacterCheck.check_characters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.file.CharacterCheck.check_characters" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.file.CharacterCheck.regex_characters">
+<span class="sig-name descname"><span class="pre">regex_characters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'[^a-zA-Z0-9,_-]'</span></em><a class="headerlink" href="#acheck.checks.file.CharacterCheck.regex_characters" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.file.CharacterCheck.regex_time">
+<span class="sig-name descname"><span class="pre">regex_time</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'[^0-9.-]'</span></em><a class="headerlink" href="#acheck.checks.file.CharacterCheck.regex_time" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.file.CharacterCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/file.html#CharacterCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.file.CharacterCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.file.ReadFileCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.file.</span></span><span class="sig-name descname"><span class="pre">ReadFileCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/file.html#ReadFileCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.file.ReadFileCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Checks if there are any issues during reading the file by opening it</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.file.ReadFileCheck.check_open_file">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_open_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">infile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/file.html#ReadFileCheck.check_open_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.file.ReadFileCheck.check_open_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.file.ReadFileCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/file.html#ReadFileCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.file.ReadFileCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-acheck.checks.objects">
+<span id="acheck-checks-objects"></span><h2>acheck.checks.objects<a class="headerlink" href="#module-acheck.checks.objects" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.objects.ActionCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.objects.</span></span><span class="sig-name descname"><span class="pre">ActionCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/objects.html#ActionCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.objects.ActionCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Check for actions that are not part of the model description</p>
+<p>e.g. the action in “hold-manual-both” is hold</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.objects.ActionCheck.check_actions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/objects.html#ActionCheck.check_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.objects.ActionCheck.check_actions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.objects.ActionCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/objects.html#ActionCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.objects.ActionCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.objects.WorldObjectsCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.objects.</span></span><span class="sig-name descname"><span class="pre">WorldObjectsCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/objects.html#WorldObjectsCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.objects.WorldObjectsCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Check for objects that are not part of the model description</p>
+<p>e.g. the objects in “hold-manual-both” are manual and both</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.objects.WorldObjectsCheck.check_world_objects">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_world_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/objects.html#WorldObjectsCheck.check_world_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.objects.WorldObjectsCheck.check_world_objects" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.objects.WorldObjectsCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/objects.html#WorldObjectsCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.objects.WorldObjectsCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checks.objects.suppress_stdout">
+<span class="sig-prename descclassname"><span class="pre">acheck.checks.objects.</span></span><span class="sig-name descname"><span class="pre">suppress_stdout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/objects.html#suppress_stdout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.objects.suppress_stdout" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-acheck.checks.signature">
+<span id="acheck-checks-signature"></span><h2>acheck.checks.signature<a class="headerlink" href="#module-acheck.checks.signature" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.signature.SignatureCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.signature.</span></span><span class="sig-name descname"><span class="pre">SignatureCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/signature.html#SignatureCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.signature.SignatureCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Check for the occurring of multiple different signature descriptions for the same action</p>
+<p>As a fix you can select one signature as the right one and only all other descriptions will give you an error
+e.g.</p>
+<p>“hold-manual-both” -&gt; hold takes two arguments -&gt; signature of 2
+“hold-manual-both-right” -&gt; hold takes three arguments -&gt; signature of 3</p>
+<p>If you select a signature of 2 for hold, “hold-manual-both-right” and all different signatures
+will give you an error.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.signature.SignatureCheck.check_signatures">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_signatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signature_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/signature.html#SignatureCheck.check_signatures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.signature.SignatureCheck.check_signatures" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.signature.SignatureCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/signature.html#SignatureCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.signature.SignatureCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-acheck.checks.spelling">
+<span id="acheck-checks-spelling"></span><h2>acheck.checks.spelling<a class="headerlink" href="#module-acheck.checks.spelling" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.spelling.SpellCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.spelling.</span></span><span class="sig-name descname"><span class="pre">SpellCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/spelling.html#SpellCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.spelling.SpellCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Checks whether the given annotation has spelling mistakes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><dl class="simple">
+<dt>language:</dt><dd><p>Supported languages if installed correctly: en_US, en_GB, de_DE</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.spelling.SpellCheck.check_spelling">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_spelling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ench</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pwl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/spelling.html#SpellCheck.check_spelling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.spelling.SpellCheck.check_spelling" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lang</strong> – </p></li>
+<li><p><strong>ench</strong> – </p></li>
+<li><p><strong>line_limit</strong> – </p></li>
+<li><p><strong>check_id</strong> – </p></li>
+<li><p><strong>annotation_file</strong> – </p></li>
+<li><p><strong>pwl</strong> – </p></li>
+<li><p><strong>pel</strong> – </p></li>
+<li><p><strong>auto_add</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.spelling.SpellCheck.language">
+<span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'en_US'</span></em><a class="headerlink" href="#acheck.checks.spelling.SpellCheck.language" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.spelling.SpellCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/spelling.html#SpellCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.spelling.SpellCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-acheck.checks.structure">
+<span id="acheck-checks-structure"></span><h2>acheck.checks.structure<a class="headerlink" href="#module-acheck.checks.structure" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.structure.ExpressionStructureCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.structure.</span></span><span class="sig-name descname"><span class="pre">ExpressionStructureCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/structure.html#ExpressionStructureCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.structure.ExpressionStructureCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Checks if the structure of the annotation lines have a given pattern</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><dl class="simple">
+<dt>regex_expressions_structure:</dt><dd><p>The regular expression that matches every line of the annotation</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.structure.ExpressionStructureCheck.check_expression_structure">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_expression_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/structure.html#ExpressionStructureCheck.check_expression_structure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.structure.ExpressionStructureCheck.check_expression_structure" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.structure.ExpressionStructureCheck.regex_expressions_structure">
+<span class="sig-name descname"><span class="pre">regex_expressions_structure</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'[a-zA-Z0-9]+(_[a-zA-Z0-9]+)*(-[a-zA-Z0-9]+(_[a-zA-Z-0-9]+)*)*'</span></em><a class="headerlink" href="#acheck.checks.structure.ExpressionStructureCheck.regex_expressions_structure" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.structure.ExpressionStructureCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/structure.html#ExpressionStructureCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.structure.ExpressionStructureCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.structure.TimeAscendingCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.structure.</span></span><span class="sig-name descname"><span class="pre">TimeAscendingCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/structure.html#TimeAscendingCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.structure.TimeAscendingCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Checks whether the given annotation has incrementing timestamps</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><dl class="simple">
+<dt>strict:</dt><dd><p>Check for real ascending timestamps, otherwise following equal timestamps are allowed</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.structure.TimeAscendingCheck.check_time_ascending">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_time_ascending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/structure.html#TimeAscendingCheck.check_time_ascending"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.structure.TimeAscendingCheck.check_time_ascending" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.structure.TimeAscendingCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/structure.html#TimeAscendingCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.structure.TimeAscendingCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.structure.TimeAscendingCheck.strict">
+<span class="sig-name descname"><span class="pre">strict</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#acheck.checks.structure.TimeAscendingCheck.strict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.structure.TimeIsNumberCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.structure.</span></span><span class="sig-name descname"><span class="pre">TimeIsNumberCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/structure.html#TimeIsNumberCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.structure.TimeIsNumberCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Check if the first column of the csv line is a number</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.structure.TimeIsNumberCheck.check_time_is_number">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_time_is_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/structure.html#TimeIsNumberCheck.check_time_is_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.structure.TimeIsNumberCheck.check_time_is_number" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.structure.TimeIsNumberCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/structure.html#TimeIsNumberCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.structure.TimeIsNumberCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-acheck.checks.validating">
+<span id="acheck-checks-validating"></span><h2>acheck.checks.validating<a class="headerlink" href="#module-acheck.checks.validating" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.validating.PDDLSyntaxCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.validating.</span></span><span class="sig-name descname"><span class="pre">PDDLSyntaxCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/validating.html#PDDLSyntaxCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.validating.PDDLSyntaxCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Checks the model files for pddl syntax errors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><dl class="simple">
+<dt>timeout:</dt><dd><p>Time after which the validator terminates if it does not receive a response</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.validating.PDDLSyntaxCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/validating.html#PDDLSyntaxCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.validating.PDDLSyntaxCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.validating.PDDLSyntaxCheck.timeout">
+<span class="sig-name descname"><span class="pre">timeout</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#acheck.checks.validating.PDDLSyntaxCheck.timeout" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="acheck.checks.validating.PlanValidationCheck">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">acheck.checks.validating.</span></span><span class="sig-name descname"><span class="pre">PlanValidationCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.CheckGroup" title="acheck.checking.check_interface.CheckGroup"><span class="pre">CheckGroup</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayed_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/validating.html#PlanValidationCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.validating.PlanValidationCheck" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.Check" title="acheck.checking.check_interface.Check"><code class="xref py py-class docutils literal notranslate"><span class="pre">Check</span></code></a></p>
+<p>Do a plan validation based on the given annotation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Options<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><dl class="simple">
+<dt>timeout:</dt><dd><p>Time after which the validator terminates if it does not receive a response</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="acheck.checks.validating.PlanValidationCheck.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error"><span class="pre">Error</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/acheck/checks/validating.html#PlanValidationCheck.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.validating.PlanValidationCheck.run" title="Permalink to this definition"></a></dt>
+<dd><p>Start the check. All checks must inherit from this abstract class and need to implement their own run() method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotation</strong> (<em>Path</em>) – Path of the annotation file</p></li>
+<li><p><strong>problem</strong> (<em>Path</em>) – Path of the domain file</p></li>
+<li><p><strong>domain</strong> (<em>Path</em>) – Path of the problem file</p></li>
+<li><p><strong>line_limit</strong> (<em>int</em>) – Limits the check of the annotation up to a certain line. Defaults to “-1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing all the errors that were found during the check.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="acheck.checking.html#acheck.checking.error.Error" title="acheck.checking.error.Error">Error</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="acheck.checks.validating.PlanValidationCheck.timeout">
+<span class="sig-name descname"><span class="pre">timeout</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#acheck.checks.validating.PlanValidationCheck.timeout" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checks.validating.get_time_from_block">
+<span class="sig-prename descclassname"><span class="pre">acheck.checks.validating.</span></span><span class="sig-name descname"><span class="pre">get_time_from_block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg_block</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/acheck/checks/validating.html#get_time_from_block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.validating.get_time_from_block" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checks.validating.parse_stderr">
+<span class="sig-prename descclassname"><span class="pre">acheck.checks.validating.</span></span><span class="sig-name descname"><span class="pre">parse_stderr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stderr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/validating.html#parse_stderr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.validating.parse_stderr" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checks.validating.parse_stdout">
+<span class="sig-prename descclassname"><span class="pre">acheck.checks.validating.</span></span><span class="sig-name descname"><span class="pre">parse_stdout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/validating.html#parse_stdout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.validating.parse_stdout" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checks.validating.plan_validation">
+<span class="sig-prename descclassname"><span class="pre">acheck.checks.validating.</span></span><span class="sig-name descname"><span class="pre">plan_validation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="acheck.checking.html#acheck.checking.check_interface.ToolObjectsMeta" title="acheck.checking.check_interface.ToolObjectsMeta"><span class="pre">ToolObjectsMeta</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_finished_as_last_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/validating.html#plan_validation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.validating.plan_validation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="acheck.checks.validating.use_validator">
+<span class="sig-prename descclassname"><span class="pre">acheck.checks.validating.</span></span><span class="sig-name descname"><span class="pre">use_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/acheck/checks/validating.html#use_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#acheck.checks.validating.use_validator" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="acheck.checking.html" class="btn btn-neutral float-left" title="acheck.checking.check_interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Felix Gratzkowski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
