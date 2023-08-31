@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clone and prepare for development &mdash; CausalAnnotationCorrection 0.0.5 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=0a554088"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Listing" href="acheck.html" />
+    <link rel="prev" title="GUI" href="structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CausalAnnotationCorrection
+          </a>
+              <div class="version">
+                0.0.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">GUI</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Clone and prepare for development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-your-own-check">Creating your own <code class="docutils literal notranslate"><span class="pre">Check</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="acheck.html">API Listing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CausalAnnotationCorrection</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Clone and prepare for development</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/development.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="clone-and-prepare-for-development">
+<h1>Clone and prepare for development<a class="headerlink" href="#clone-and-prepare-for-development" title="Permalink to this heading"></a></h1>
+<p>Clone the repository and navigate into the <code class="docutils literal notranslate"><span class="pre">annotation-checker</span></code> directory. Now you will need to install all packages that do not come with python.</p>
+<ul>
+<li><p>If you want to use <code class="docutils literal notranslate"><span class="pre">Pipenv</span></code>, make sure you are in the repository folder and run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pipenv shell
+$ pipenv install -e .
+</pre></div>
+</div>
+</li>
+<li><p>If you want to use your own virtual environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m pip install -r requirements.txt
+$ python -m pip install -e .
+</pre></div>
+</div>
+</li>
+</ul>
+<p>This will install the module together with all other packages needed.</p>
+<p>If you need some help with virtual environments, have a look at:
+<a class="reference external" href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/">https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/</a></p>
+<section id="creating-your-own-check">
+<h2>Creating your own <code class="docutils literal notranslate"><span class="pre">Check</span></code><a class="headerlink" href="#creating-your-own-check" title="Permalink to this heading"></a></h2>
+<p>This is a tutorial on how to create your own check using an example check that checks annotation for capital letters.</p>
+<ol class="arabic simple">
+<li><p>Go to <code class="docutils literal notranslate"><span class="pre">src/acheck/checks</span></code> and create a new module for your check. In this example we will call it: <code class="docutils literal notranslate"><span class="pre">capital_letters.py</span></code></p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">capital_letters.py</span></code> and create a new class that inherits</p></li>
+<li><p>Import the abstract <code class="docutils literal notranslate"><span class="pre">Check</span></code> class from the <code class="docutils literal notranslate"><span class="pre">acheck/checking/check_interface.py</span></code> module and create a new class with the name of the check, which inherits from the <code class="docutils literal notranslate"><span class="pre">Check</span></code> interface.</p></li>
+<li><p>Now you need to implement the abstract method <code class="docutils literal notranslate"><span class="pre">run</span></code> of the <code class="docutils literal notranslate"><span class="pre">Check</span></code> class and your code should look like this:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="linenos">2</span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="linenos">3</span><span class="kn">from</span> <span class="nn">acheck.checking.check_interface</span> <span class="kn">import</span> <span class="n">Check</span>
+<span class="linenos">4</span><span class="kn">from</span> <span class="nn">acheck.checking.error</span> <span class="kn">import</span> <span class="n">Error</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="k">class</span> <span class="nc">CapitalLettersCheck</span><span class="p">(</span><span class="n">Check</span><span class="p">):</span>
+<span class="linenos">7</span>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Error</span><span class="p">]:</span>
+<span class="linenos">8</span>       <span class="k">pass</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Now we can create a function that checks the annotation for capital letters, and returns a list of <code class="docutils literal notranslate"><span class="pre">Error</span></code> objects. It should contain at least all parameters of the run method, plus a <code class="docutils literal notranslate"><span class="pre">check_id</span></code> and <code class="docutils literal notranslate"><span class="pre">logs</span></code>:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">class</span> <span class="nc">CapitalLettersCheck</span><span class="p">(</span><span class="n">Check</span><span class="p">):</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span>    <span class="nd">@staticmethod</span>
+<span class="linenos">4</span>    <span class="k">def</span> <span class="nf">_check_capital_letters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span> <span class="p">,</span><span class="n">domain</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">check_id</span><span class="p">,</span> <span class="n">logs</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">):</span>
+<span class="linenos">5</span>        <span class="k">pass</span>
+<span class="linenos">6</span>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Error</span><span class="p">]:</span>
+<span class="linenos">7</span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>We need to create a new <code class="docutils literal notranslate"><span class="pre">ErrorType</span></code>. So navigate into the <code class="docutils literal notranslate"><span class="pre">acheck/checking/error.py</span></code> module and create the new <code class="docutils literal notranslate"><span class="pre">ErrorType.IllegalUppercase</span></code> type at the end of <code class="docutils literal notranslate"><span class="pre">ErrorType(Enum)</span></code>:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span> <span class="nc">ErrorType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="linenos"> 2</span><span class="sd">&quot;&quot;&quot;All different error types that a check can display&quot;&quot;&quot;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="n">IllegalFile</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos"> 5</span><span class="sd">&quot;&quot;&quot;There is an error when opening or reading the file&quot;&quot;&quot;</span>
+<span class="linenos"> 6</span><span class="n">IllegalCSVFile</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos"> 7</span><span class="sd">&quot;&quot;&quot;There is an error when opening or reading a csv file&quot;&quot;&quot;</span>
+<span class="linenos"> 8</span><span class="n">WrongSpelling</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos"> 9</span><span class="sd">&quot;&quot;&quot;There a spelling mistake&quot;&quot;&quot;</span>
+<span class="linenos">10</span><span class="n">IllegalCharacter</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">11</span><span class="sd">&quot;&quot;&quot;There are symbols in the annotation that are not allowed&quot;&quot;&quot;</span>
+<span class="linenos">12</span><span class="n">IllegalTimestampNoNumber</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">13</span><span class="sd">&quot;&quot;&quot;The time slice of an annotation is not a number&quot;&quot;&quot;</span>
+<span class="linenos">14</span><span class="n">IllegalTimestampNotAscending</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">15</span><span class="sd">&quot;&quot;&quot;The time stamps of the actions are equal and or not ascending&quot;&quot;&quot;</span>
+<span class="linenos">16</span><span class="n">IllegalExpressionStructure</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">17</span><span class="sd">&quot;&quot;&quot;The structure of the expressions does not correspond to the predefined structure of an annotation expression&quot;&quot;&quot;</span>
+<span class="linenos">18</span><span class="n">UnknownAction</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">19</span><span class="sd">&quot;&quot;&quot;An action is not defined in the domain&quot;&quot;&quot;</span>
+<span class="linenos">20</span><span class="n">UnknownObject</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">21</span><span class="sd">&quot;&quot;&quot;Another object is not known in the domain&quot;&quot;&quot;</span>
+<span class="linenos">22</span><span class="n">IllegalSignature</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">23</span><span class="sd">&quot;&quot;&quot;The signature of an action is not correct or marked as correct&quot;&quot;&quot;</span>
+<span class="linenos">24</span><span class="n">PlanValidationError</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">25</span><span class="sd">&quot;&quot;&quot;An error occurred when validating the plan resulting from the annotation.&quot;&quot;&quot;</span>
+<span class="linenos">26</span><span class="n">IllegalDomainDescription</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">27</span><span class="sd">&quot;&quot;&quot;The PDDL description is not correct&quot;&quot;&quot;</span>
+<span class="linenos">28</span><span class="n">IllegalProblemDescription</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="sd">&quot;&quot;&quot;There are uppercase letters in the annotation&quot;&quot;&quot;</span>
+<span class="linenos">31</span><span class="n">IllegalUppercase</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="7">
+<li><p>Now implement your logic. You can use functions from <code class="docutils literal notranslate"><span class="pre">acheck/utils/annotationhelper.py</span></code>, that help you iterate through the annotation file:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="sd">&quot;&quot;&quot;Helper functions parse_annotation and read_annotation&quot;&quot;&quot;</span>
+<span class="linenos"> 2</span><span class="n">times</span><span class="p">,</span> <span class="n">divs</span><span class="p">,</span> <span class="n">expressions</span> <span class="o">=</span> <span class="n">ah</span><span class="o">.</span><span class="n">parse_annotation</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span><span class="n">line_limit</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="n">lines</span> <span class="o">=</span> <span class="n">ah</span><span class="o">.</span><span class="n">read_annotation</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">)</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="sd">&quot;&quot;&quot;For an example.csv that looks like:</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="sd">0,putsock-left_sock-left_foot</span>
+<span class="linenos"> 8</span><span class="sd">20,putsock-right_sock-right_foot</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="sd">The returning values of parse_annotation() will look like this:</span>
+<span class="linenos">11</span><span class="sd">times = [&quot;0&quot;,&quot;20&quot;]</span>
+<span class="linenos">12</span><span class="sd">divs = [&quot;-&quot;,&quot;-&quot;]</span>
+<span class="linenos">13</span><span class="sd">expressions = [&quot;left_sock-left_foot&quot;,&quot;right_sock-right_foot&quot;]</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="sd">The returning values of read_annotation() will look like this:</span>
+<span class="linenos">16</span><span class="sd">lines = [&quot; 0,putsock-left_sock-left_foot&quot;,&quot; 20,putsock-right_sock-right_foot&quot;]</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="8">
+<li><p>Now we can implement the logic, that checks for capital letters:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">acheck.checking.check_interface</span> <span class="kn">import</span> <span class="n">Check</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">acheck.checking.error</span> <span class="kn">import</span> <span class="n">Error</span><span class="p">,</span> <span class="n">ErrorType</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Fix</span><span class="p">,</span> <span class="n">FixCode</span><span class="p">,</span> <span class="n">ErrorLevel</span>
+<span class="linenos"> 5</span><span class="kn">import</span> <span class="nn">acheck.utils.annotationhelper</span> <span class="k">as</span> <span class="nn">ah</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">class</span> <span class="nc">CapitalLettersCheck</span><span class="p">(</span><span class="n">Check</span><span class="p">):</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="nd">@staticmethod</span>
+<span class="linenos">10</span>    <span class="k">def</span> <span class="nf">_check_capital_letters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">check_id</span><span class="p">,</span> <span class="n">logs</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">):</span>
+<span class="linenos">11</span>        <span class="c1"># Create an empty list, that will be returned at the end, containing all errors that were found.</span>
+<span class="linenos">12</span>        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>        <span class="c1"># Use helper function to get a list of all annotation lines</span>
+<span class="linenos">15</span>        <span class="n">lines</span> <span class="o">=</span> <span class="n">ah</span><span class="o">.</span><span class="n">read_annotation</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>       <span class="c1"># Iterate through all lines</span>
+<span class="linenos">18</span>       <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+<span class="linenos">19</span>           <span class="c1"># Checking if there are any uppercase letters</span>
+<span class="linenos">20</span>           <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+<span class="linenos">21</span>               <span class="c1"># We create an Error object and append it to the list</span>
+<span class="linenos">22</span>               <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="linenos">23</span>                   <span class="n">Error</span><span class="p">(</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">,</span>  <span class="c1"># Simply pass the value</span>
+<span class="linenos">24</span>                         <span class="n">error_type</span> <span class="o">=</span> <span class="n">ErrorType</span><span class="o">.</span><span class="n">IllegalUppercase</span><span class="p">,</span>  <span class="c1"># Newly created ErrorType.IllegalUppercase</span>
+<span class="linenos">25</span>                         <span class="n">check_id</span> <span class="o">=</span> <span class="n">check_id</span><span class="p">,</span>  <span class="c1"># Simply pass the value</span>
+<span class="linenos">26</span>                         <span class="n">line_number</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Specify the line number</span>
+<span class="linenos">27</span>                         <span class="n">incorrect_sequence</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">start_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">char_sequence</span><span class="o">=</span><span class="n">line</span><span class="p">),</span>  <span class="c1"># Specify the incorrect char Sequence. In this case we want to mark the whole line. So we can replace it with the correct one later.</span>
+<span class="linenos">28</span>                         <span class="n">fixes</span><span class="o">=</span><span class="p">[</span><span class="n">Fix</span><span class="p">(</span><span class="n">correct_string</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">fix_code</span><span class="o">=</span><span class="n">FixCode</span><span class="o">.</span><span class="n">ReplaceSequence</span><span class="p">)],</span>  <span class="c1"># Specify the auto fix behavior. In this case it will replace the incorrect sequence with the correct string.</span>
+<span class="linenos">29</span>                         <span class="n">error_level</span><span class="o">=</span><span class="n">ErrorLevel</span><span class="o">.</span><span class="n">Error</span><span class="p">,</span>  <span class="c1"># Specify the error level</span>
+<span class="linenos">30</span>                         <span class="p">)</span>
+<span class="linenos">31</span>               <span class="p">)</span>
+<span class="linenos">32</span>       <span class="c1"># Return the list at the end</span>
+<span class="linenos">33</span>       <span class="k">return</span> <span class="n">errors</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>   <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Error</span><span class="p">]:</span>
+<span class="linenos">36</span>       <span class="k">pass</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="9">
+<li><p>If you want to give some information to the user, you can just append message strings to the <code class="docutils literal notranslate"><span class="pre">logs</span></code> list, and they will be shown later in the tool.</p></li>
+<li><p>As an important info, if there is any kind of <code class="docutils literal notranslate"><span class="pre">Exception</span></code> during the checking process, this check will be disabled automatically and the error message is shown in the tool. If you want to specify your own <code class="docutils literal notranslate"><span class="pre">Exceptions</span></code> just raise them with a custom message.</p></li>
+<li><p>Now it is time to set up the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method:</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">line_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Error</span><span class="p">]:</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span>  <span class="c1">#Always empty the logs at the start</span>
+<span class="linenos"> 4</span>  <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>  <span class="c1"># Returning the list of errors, that was created by the `_check_capital_letters` method.</span>
+<span class="linenos"> 7</span>  <span class="k">return</span> <span class="n">CapitalLettersCheck</span><span class="o">.</span><span class="n">_check_capital_letters</span><span class="p">(</span>
+<span class="linenos"> 8</span>      <span class="n">annotation</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">,</span>  <span class="c1"># Just pass the value</span>
+<span class="linenos"> 9</span>      <span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span><span class="p">,</span>  <span class="c1"># Just pass the value</span>
+<span class="linenos">10</span>      <span class="n">problem</span> <span class="o">=</span> <span class="n">problem</span><span class="p">,</span>  <span class="c1"># Just pass the value</span>
+<span class="linenos">11</span>      <span class="n">check_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>  <span class="c1"># Just pass the value. The id is generated automatically.</span>
+<span class="linenos">12</span>      <span class="n">logs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="p">,</span> <span class="c1"># Just pass the value</span>
+<span class="linenos">13</span>      <span class="n">line_limit</span> <span class="o">=</span> <span class="n">line_limit</span>  <span class="c1"># Just pass the value. The id is generated automatically.</span>
+<span class="linenos">14</span>  <span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic" start="12">
+<li><p>Now we need to register the <code class="docutils literal notranslate"><span class="pre">Check</span></code> inside <code class="docutils literal notranslate"><span class="pre">acheck/checkers.py</span></code>. Choose at which position you want the check to start and if you want it to be sequential or continuous:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="o">.</span>
+<span class="linenos"> 2</span><span class="o">.</span>
+<span class="linenos"> 3</span><span class="o">.</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="kn">from</span> <span class="nn">acheck.checks.capital</span> <span class="kn">import</span> <span class="n">CapitalLettersCheck</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">def</span> <span class="nf">register_checks</span><span class="p">(</span><span class="n">tool_meta</span><span class="p">):</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="o">.</span>
+<span class="linenos">10</span><span class="o">.</span>
+<span class="linenos">11</span><span class="o">.</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="n">default_checks</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>  <span class="c1"># For this example we just added the check at the beginning of the sequentially running checks</span>
+<span class="linenos">16</span>  <span class="n">CapitalLettersCheck</span><span class="p">(</span>
+<span class="linenos">17</span>      <span class="n">group</span><span class="o">=</span><span class="n">CheckGroup</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span>  <span class="c1"># Pass the default group. For async_checks it would be CheckGroup.Async</span>
+<span class="linenos">18</span>      <span class="n">tool_meta</span><span class="o">=</span><span class="n">tool_meta</span>  <span class="c1"># Just pass the value. For more information have look in the API Listing under `ToolObjectsMeta`</span>
+<span class="linenos">19</span>  <span class="p">),</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>  <span class="n">ReadFileCheck</span><span class="p">(</span>
+<span class="linenos">22</span>      <span class="n">group</span><span class="o">=</span><span class="n">CheckGroup</span><span class="o">.</span><span class="n">PreStart</span><span class="p">,</span>
+<span class="linenos">23</span>      <span class="n">tool_meta</span><span class="o">=</span><span class="n">tool_meta</span><span class="p">,</span>
+<span class="linenos">24</span>  <span class="p">),</span>
+<span class="linenos">25</span><span class="o">.</span>
+<span class="linenos">26</span><span class="o">.</span>
+<span class="linenos">27</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Now that everything has been registered correctly, the application can be started and the new check appears in the tool.</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="structure.html" class="btn btn-neutral float-left" title="GUI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="acheck.html" class="btn btn-neutral float-right" title="API Listing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Felix Gratzkowski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
