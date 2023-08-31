@@ -10,9 +10,11 @@ import acheck.utils.filehelper as fh
 def compute_fix_request(error_id: int, fix_id: int, fix_same: bool, errors: List[Error], annotation_file, tool_meta,
                         custom_replace: str = None):
     if not fix_same:
-        _fix_error(errors[error_id], fix_id, annotation_file, tool_meta, custom_replace)
+        if len(errors) > error_id:
+            _fix_error(errors[error_id], fix_id, annotation_file, tool_meta, custom_replace)
     else:
-        _fix_errors(_get_all_errors(errors[error_id], errors), fix_id, annotation_file, tool_meta, custom_replace)
+        if len(errors) > error_id:
+            _fix_errors(_get_all_errors(errors[error_id], errors), fix_id, annotation_file, tool_meta, custom_replace)
 
 
 def _fix_add_dictionary(fix: Fix, pwl, pel):

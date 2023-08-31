@@ -26,10 +26,6 @@ def register_checks(tool_meta):
             group=CheckGroup.Async,
             tool_meta=tool_meta,
         ),
-        PDDLSyntaxCheck(
-            group=CheckGroup.Async,
-            tool_meta=tool_meta,
-        ),
     ]
 
     """
@@ -65,7 +61,10 @@ def register_checks(tool_meta):
             group=CheckGroup.Default,
             tool_meta=tool_meta,
         ),
-
+        PDDLSyntaxCheck(
+            group=CheckGroup.Default,
+            tool_meta=tool_meta,
+        ),
         ActionCheck(
             group=CheckGroup.Default,
             tool_meta=tool_meta,

@@ -26,6 +26,8 @@ def main():
     """Init tool meta object"""
     tool_meta = ToolObjectsMeta()
 
+
+    """init logging"""
     configure_logging(logging.INFO)
 
     """Parsing command line arguments"""
@@ -106,8 +108,9 @@ def main():
     """Configure logging level"""
 
     if args.debug:
-
         configure_logging(logging.DEBUG)
+    else:
+        configure_logging(logging.INFO)
 
     """Register `multi` argument"""
     if args.multi:
@@ -300,7 +303,8 @@ def file_path(path):
 def configure_logging(level):
     logging.basicConfig(
         format="[%(threadName)s] %(name)s %(levelname)-8s %(message)s",
-        level=level
+        level=level,
+        force=True
     )
 
 

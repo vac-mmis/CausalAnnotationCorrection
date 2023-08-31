@@ -370,9 +370,21 @@ def _data_to_dict(tool_meta: ToolObjectsMeta, server_timestamp, checks: List[Che
             json_errors = json.loads(errors)
             json_groups = json.loads(groups)
             json_group_lists_model = [json.loads(group) for group in group_lists_model]
+
         except json.JSONDecodeError as e:
             logger.debug("Errors or groups list is empty")
-            pass
+
+        if json_errors is None:
+            json_errors = list()
+        if json_groups is None:
+            json_errors = dict()
+        if json_group_lists_model is None:
+            json_errors = list()
+
+
+        logger.debug(json_group_lists_model)
+
+
         data.setdefault("annotations", []).append(
             {
                 "file": annotation_dict["file"],
@@ -573,7 +585,7 @@ def compute_global_checks(annotation_file: Path, domain_file: Path, problem_file
             current_errors = check.run(annotation_file, domain_file, problem_file, line_limit)
             if len([e for e in current_errors]) == 0:
                 logging_output.append(("info", f"Passed: {check.__class__.__name__}"))
-                check.logs.insert(0,f"Passed {check.__class__.__name__}\n")
+                check.logs.insert(0, f"Passed {check.__class__.__name__}\n")
             else:
                 warning_string, error_string = format_warn_err(current_errors)
                 warnings_count, error_count = count_warn_err_(current_errors)
@@ -619,7 +631,7 @@ def compute_default_checks(annotation_file: Path, domain_file: Path, problem_fil
 
         if len([e for e in current_errors if e.error_level is not ErrorLevel.Warning]) == 0:
             logging_output.append(("info", f"Passed: {check.__class__.__name__}"))
-            check.logs.insert(0,f"Passed {check.__class__.__name__}\n")
+            check.logs.insert(0, f"Passed {check.__class__.__name__}\n")
             errors_default += current_errors
             continue
         else:

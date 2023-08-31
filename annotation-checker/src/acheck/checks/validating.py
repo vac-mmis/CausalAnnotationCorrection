@@ -111,7 +111,7 @@ def _plan_validation(annotation: Path, domain: Path, problem: Path, tool_meta: T
         if "failed to read file" in critical_msg:
             error_list.append(
                 Error(
-                    file_name=annotation,
+                    file_name=domain,
 
                     fixes=[Fix(fix_code=FixCode.Alert, correct_string="Problem description is invalid.")],
                     error_type=ErrorType.IllegalProblemDescription,
@@ -121,7 +121,7 @@ def _plan_validation(annotation: Path, domain: Path, problem: Path, tool_meta: T
         if "Error:" in critical_msg:
             error_list.append(
                 Error(
-                    file_name=annotation,
+                    file_name=domain,
 
                     fixes=[Fix(fix_code=FixCode.Alert, correct_string="There was an error during plan validation. "
                                                                       "Make sure that 'ActionCheck' and 'WorldObjectCheck' are enabled. "
@@ -158,7 +158,7 @@ def _plan_validation(annotation: Path, domain: Path, problem: Path, tool_meta: T
 
             error_list.append(
                 Error(
-                    file_name=domain,
+                    file_name=annotation,
                     error_type=ErrorType.PlanValidationError,
                     line_number=time_to_line_number(annotation, _get_time_from_block(error_block), line_limit),
                     incorrect_sequence=Sequence(0, annotation_lines[

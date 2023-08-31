@@ -9,9 +9,9 @@ ifdef PORT
 endif
 
 
-build:
+builddocker:
 	docker build -t cac . --no-cache
-push:
+pushdocker:
 	docker build -t cac . --no-cache
 	docker tag cac fgratzkowski/cac
 	docker push fgratzkowski/cac

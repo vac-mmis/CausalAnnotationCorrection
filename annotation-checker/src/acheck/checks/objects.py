@@ -34,7 +34,7 @@ class WorldObjectsCheck(Check):
 
     def run(self, annotation_file, domain_file, problem_file, line_limit=-1) -> List[Error]:
         self.logs.clear()
-        errors = self.check_world_objects(annotation=annotation_file,
+        errors = self._check_world_objects(annotation=annotation_file,
                                           domain=domain_file,
                                           problem=problem_file,
                                           check_id=self.id,

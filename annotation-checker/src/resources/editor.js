@@ -89,6 +89,9 @@ class Loading {
 
 function markLines(editor, marker, groupList) {
 
+    if (groupList == null){
+        groupList = {};
+    }
 
     let lines = editor.getValue().split("\n");
 
@@ -102,6 +105,7 @@ function markLines(editor, marker, groupList) {
     for (let markerID in session.getMarkers()) {
         session.removeMarker(markerID);
     }
+
 
     if ("-1" in groupList) {
         let endRow = session.getDocument().getAllLines().length;
@@ -524,7 +528,6 @@ function showOptions(viewController) {
 
     optionsContainer.innerHTML = "";
 
-    console.log(checks);
 
     //Continuous checks heading
 

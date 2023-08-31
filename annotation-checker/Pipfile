@@ -18,6 +18,7 @@ pytest = "==7.3.1"
 build = "*"
 sphinx-rtd-theme = "*"
 sphinx = "*"
+docutils = "==0.18.1"
 
 [requires]
 python_version = "3.8"

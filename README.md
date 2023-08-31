@@ -22,10 +22,10 @@ Fast start the example:
 4. Simply invoke: `make run`
 
 Use your own files:
-1. On your system, navigate to the directory that contains the files you want to use (domain.pddl, problem.pddl, annotation.csv).
-2. Run the image from docker hub:
+1. On your system, navigate to `your directory` that contains the files you want to use (domain.pddl, problem.pddl, annotation.csv).
+2. Run the image from docker hub, you will need to replace `$(your_absolute_directory)` with the absolute path of `your directory`:
     ```
-    $ docker run -p 9000:9000  docker run -p 9000:9000 --mount type=bind,source=".",target="/home/cac/CausalAnnotationCorrection/OUTSIDE" -it fgratzkowski/cac -it fgratzkowski/cac
+    $ docker run -p 9000:9000 --mount type=bind,source="$(your_absolute_directory)",target="/home/cac/CausalAnnotationCorrection/OUTSIDE" -it fgratzkowski/cac
     ```
 3. You will find your files in the `OUTSIDE` directory:
     ```
