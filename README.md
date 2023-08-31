@@ -8,9 +8,7 @@ For details view the [Licence file](https://github.com/vac-mmis/CausalAnnotation
 # Causal Annotation Correction Tool
 A tool support tool for inspection, validation and correction of behavioral annotations.
 
-## Installation with Docker
-
-
+## Installation with Docker;
 
 Fast start the example:
 1. Install docker ([https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/))
@@ -39,7 +37,7 @@ Use your own files:
 
 
 ---
-## Installation
+## Installation via PIP
 If you just want to use the tool independently of docker,
 you can install the package via `pip`:
 ```
