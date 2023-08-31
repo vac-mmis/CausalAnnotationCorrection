@@ -1,5 +1,5 @@
 build:
-	python -m build
+	python -m buildf
 	python -m twine upload dist/*
 
 buildtest:
@@ -12,4 +12,5 @@ docs:
 	rm -rf ../../fgratzkowski.github.io/docs/
 	mkdir ../../fgratzkowski.github.io/docs/
 	cp -a src\docs\_build\html\. ../../fgratzkowski.github.io/docs
+	cd ../../fgratzkowski.github.io/ && make run
 

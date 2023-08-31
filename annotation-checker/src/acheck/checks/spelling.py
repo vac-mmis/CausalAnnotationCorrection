@@ -33,7 +33,7 @@ class SpellCheck(Check):
 
         pwl = self.tool_meta.pwl
         pel = self.tool_meta.pel
-        return self.check_spelling(annotation_file=annotation_file,
+        return self._check_spelling(annotation_file=annotation_file,
                                    pwl=pwl,
                                    pel=pel,
                                    auto_add=False,
@@ -44,7 +44,7 @@ class SpellCheck(Check):
                                    )
 
     @staticmethod
-    def check_spelling(annotation_file, check_id, line_limit, ench, lang, pwl=None, pel=None, auto_add=False):
+    def _check_spelling(annotation_file, check_id, line_limit, ench, lang, pwl=None, pel=None, auto_add=False):
         """
 
         :param lang:

@@ -16,12 +16,12 @@ class TimeIsNumberCheck(Check):
 
     def run(self, annotation_file, domain_file, problem_file, line_limit=-1) -> List[Error]:
         self.logs.clear()
-        return self.check_time_is_number(annotation_file=annotation_file,
+        return self._check_time_is_number(annotation_file=annotation_file,
                                          check_id=self.id,
                                          line_limit=line_limit)
 
     @staticmethod
-    def check_time_is_number(annotation_file: Path, check_id, line_limit) -> List[Error]:
+    def _check_time_is_number(annotation_file: Path, check_id, line_limit) -> List[Error]:
         error_list = []
         times, commas, expressions = parse_annotation(annotation_file, line_limit)
         for index, (time, comma, expression) in enumerate(zip(times, commas, expressions), start=1):
@@ -58,13 +58,13 @@ class TimeAscendingCheck(Check):
     def run(self, annotation_file, domain_file, problem_file, line_limit=-1) -> List[Error]:
         self.logs.clear()
 
-        return self.check_time_ascending(annotation_file,
+        return self._check_time_ascending(annotation_file,
                                          check_id=self.id,
                                          strict=self.options.get("strict", self.strict),
                                          line_limit=line_limit)
 
     @staticmethod
-    def check_time_ascending(annotation_file: Path, check_id, line_limit, strict: bool = False, ) -> List[Error]:
+    def _check_time_ascending(annotation_file: Path, check_id, line_limit, strict: bool = False, ) -> List[Error]:
         error_list = []
         times, commas, expressions = parse_annotation(annotation_file, line_limit)
         time_old = -1
@@ -102,14 +102,14 @@ class ExpressionStructureCheck(Check):
     def run(self, annotation_file, domain_file, problem_file, line_limit=-1) -> List[Error]:
         self.logs.clear()
 
-        return self.check_expression_structure(annotation_file=annotation_file,
+        return self._check_expression_structure(annotation_file=annotation_file,
                                                regex=self.options.get("regex_expressions_structure",
                                                                       self.regex_expressions_structure),
                                                check_id=self.id,
                                                line_limit=line_limit)
 
     @staticmethod
-    def check_expression_structure(annotation_file, regex, check_id, line_limit) -> List[Error]:
+    def _check_expression_structure(annotation_file, regex, check_id, line_limit) -> List[Error]:
         error_list = []
         times, commas, expressions = parse_annotation(annotation_file, line_limit)
         for index, (time, comma, expression) in enumerate(zip(times, commas, expressions), start=1):

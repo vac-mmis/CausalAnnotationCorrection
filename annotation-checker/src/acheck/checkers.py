@@ -10,6 +10,11 @@ from acheck.checks.validating import PlanValidationCheck, PDDLSyntaxCheck
 
 
 def register_checks(tool_meta):
+    """This method is invoked by the main method to register all Checks.
+    If you created a custom check by yourself you will need to register it
+    in the async_check list or the default_checks list
+    """
+
     """
     In this list all checks must be registered which run continuously, i.e. which belong to the check group async.
     Feel free to edit and mess around with your own checks.

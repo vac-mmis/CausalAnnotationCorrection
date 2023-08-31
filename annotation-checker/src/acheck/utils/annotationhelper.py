@@ -7,8 +7,18 @@ from acheck.config import config
 logger = logging.getLogger(__name__)
 
 
-
 def parse_annotation(infile, line_limit):
+    """Reads the csf file line by line and groups everything into a times, a divs and an expressions list
+
+    For an example.csv that looks like:
+        0,putsock-left_sock-left_foot
+        20,putsock-right_sock-right_foot
+
+    The returning values of parse_annotation() will look like this:
+        times = ["0","20"]
+        divs = ["-","-"]
+        expressions = ["left_sock-left_foot","right_sock-right_foot"]
+    """
     csv_delimiter = config.load("Annotation","csv_delimiter")
     times = []
     delimiter = []
@@ -45,6 +55,15 @@ def parse_annotation(infile, line_limit):
 
 
 def read_annotation(infile, line_limit = -1) -> List[str]:
+    """Reads the csv file line by line and creates a list of lines
+
+     For an example.csv that looks like:
+        0,putsock-left_sock-left_foot
+        20,putsock-right_sock-right_foot
+
+    The returning values of read_annotation() will look like this:
+        lines = [" 0,putsock-left_sock-left_foot"," 20,putsock-right_sock-right_foot"]
+    """
     a, b, c = parse_annotation(infile, line_limit)
     if line_limit == -1:
         return [q + w + e for q, w, e in zip(a, b, c)]
@@ -111,6 +130,3 @@ def get_plan(annotation: Path, line_limit, add_finished: bool = True, ) -> List[
 
     return plan
 
-
-if __name__ == '__main__':
-    pass

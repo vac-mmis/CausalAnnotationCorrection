@@ -32,7 +32,7 @@ class CSVFormatCheck(Check):
 
     def run(self, annotation_file, domain_file, problem_file, line_limit=-1) -> List[Error]:
         self.logs.clear()
-        return self.check_csv_structure(annotation_file,
+        return self._check_csv_structure(annotation_file,
                                         sniffer_size=self.options.get("sniffer_size", self.sniffer_size),
                                         columns=self.options.get("columns", self.columns),
                                         delimiter=self.options.get("delimiter", self.quotechar),
@@ -40,7 +40,7 @@ class CSVFormatCheck(Check):
                                         check_id=self.id)
 
     @staticmethod
-    def check_csv_structure(file_name: Path, sniffer_size: int, check_id: int, columns=2, delimiter=",", quotechar='|'):
+    def _check_csv_structure(file_name: Path, sniffer_size: int, check_id: int, columns=2, delimiter=",", quotechar='|'):
 
         try:
             with open(file_name, 'r', newline='') as csvfile:
@@ -84,7 +84,7 @@ class ReadFileCheck(Check):
     """Checks if there are any issues during reading the file by opening it"""
 
     @staticmethod
-    def check_open_file(*infile, check_id):
+    def _check_open_file(*infile, check_id):
 
         for file in infile:
 
@@ -101,7 +101,7 @@ class ReadFileCheck(Check):
 
     def run(self, annotation_file, domain_file, problem_file, line_limit=-1) -> List[Error]:
         self.logs.clear()
-        return self.check_open_file(domain_file, problem_file, annotation_file, check_id=self.id)
+        return self._check_open_file(domain_file, problem_file, annotation_file, check_id=self.id)
 
 
 class CharacterCheck(Check):
@@ -118,7 +118,7 @@ class CharacterCheck(Check):
 
     def run(self, annotation_file, domain_file, problem_file, line_limit: int = -1) -> List[Error]:
         self.logs.clear()
-        return self.check_characters(annotation_file=annotation_file,
+        return self._check_characters(annotation_file=annotation_file,
                                   check_id=self.id,
                                   regex_characters=self.options.get("regex_characters", self.regex_characters),
                                   regex_time=self.options.get("regex_time", self.regex_time),
@@ -126,7 +126,7 @@ class CharacterCheck(Check):
                                   )
 
     @staticmethod
-    def check_characters(annotation_file, check_id, regex_characters, regex_time, line_limit) -> List[Error]:
+    def _check_characters(annotation_file, check_id, regex_characters, regex_time, line_limit) -> List[Error]:
         error_list = []
         times, divs, expressions = parse_annotation(annotation_file, line_limit)
 

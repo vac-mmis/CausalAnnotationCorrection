@@ -38,6 +38,8 @@ class ErrorType(Enum):
     IllegalProblemDescription = auto()
     """The PDDL description is not correct"""
 
+    IllegalUppercase = auto()
+
 
 class FixCode(Enum):
     """All different types of fixes which can be proposed as solutions to work with in the tool"""

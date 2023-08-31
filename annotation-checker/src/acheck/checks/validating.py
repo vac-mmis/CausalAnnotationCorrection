@@ -14,7 +14,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def parse_stdout(stdout):
+def _parse_stdout(stdout):
     messages = []
     msg_buffer = []
     is_msg = False
@@ -36,7 +36,7 @@ def parse_stdout(stdout):
     return messages
 
 
-def parse_stderr(stderr):
+def _parse_stderr(stderr):
     messages = []
     error_buffer = ""
     for line in stderr.decode("utf-8").splitlines():
@@ -52,7 +52,7 @@ def parse_stderr(stderr):
     return messages
 
 
-def use_validator(domain, problem, plan, validator_path, timeout, logs):
+def _use_validator(domain, problem, plan, validator_path, timeout, logs):
     process_stdout = ""
     process_stderr = f"Validator timeout after {timeout} seconds"
     try:
@@ -71,7 +71,7 @@ def use_validator(domain, problem, plan, validator_path, timeout, logs):
     return process_stdout, process_stderr
 
 
-def plan_validation(annotation: Path, domain: Path, problem: Path, tool_meta: ToolObjectsMeta,
+def _plan_validation(annotation: Path, domain: Path, problem: Path, tool_meta: ToolObjectsMeta,
                     add_finished_as_last_line: bool,
                     check_id,
                     line_limit, logs: List[str],
@@ -84,18 +84,18 @@ def plan_validation(annotation: Path, domain: Path, problem: Path, tool_meta: To
 
     annotation_lines = read_annotation(annotation, line_limit)
 
-    stdout, stderr = use_validator(domain, problem, plan, validator, timeout, logs)
+    stdout, stderr = _use_validator(domain, problem, plan, validator, timeout, logs)
 
 
 
     error_list = []
 
-    messages = parse_stdout(stdout)
+    messages = _parse_stdout(stdout)
 
     logs.append(stdout.decode('utf-8'))
     logs.append(stderr.decode('utf-8'))
 
-    critical_messages = parse_stderr(stderr)
+    critical_messages = _parse_stderr(stderr)
 
     for critical_msg in critical_messages:
         if "domain" in critical_msg:
@@ -160,9 +160,9 @@ def plan_validation(annotation: Path, domain: Path, problem: Path, tool_meta: To
                 Error(
                     file_name=domain,
                     error_type=ErrorType.PlanValidationError,
-                    line_number=time_to_line_number(annotation, get_time_from_block(error_block), line_limit),
+                    line_number=time_to_line_number(annotation, _get_time_from_block(error_block), line_limit),
                     incorrect_sequence=Sequence(0, annotation_lines[
-                        time_to_line_number(annotation, get_time_from_block(error_block), line_limit) - 1]),
+                        time_to_line_number(annotation, _get_time_from_block(error_block), line_limit) - 1]),
                     check_id=check_id,
                     fixes=[Fix(fix_code=FixCode.Alert, correct_string=" ".join(error_block))]
                 )
@@ -171,7 +171,7 @@ def plan_validation(annotation: Path, domain: Path, problem: Path, tool_meta: To
     return error_list
 
 
-def get_time_from_block(msg_block) -> float:
+def _get_time_from_block(msg_block) -> float:
     m = re.search(r"(time [0-9]*)(.)?[0-9]*", msg_block[0])
     if m:
         time = m.group().split(" ")[1].strip(")")
@@ -190,7 +190,7 @@ class PlanValidationCheck(Check):
 
     def run(self, annotation_file, domain_file, problem_file, line_limit=-1) -> List[Error]:
         self.logs.clear()
-        return plan_validation(annotation=annotation_file,
+        return _plan_validation(annotation=annotation_file,
                                domain=domain_file,
                                problem=problem_file,
                                tool_meta=self.tool_meta,

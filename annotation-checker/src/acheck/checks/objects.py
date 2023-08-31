@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @contextlib.contextmanager
-def suppress_stdout():
+def _suppress_stdout():
     old_stdout = sys.stdout
     old_stderr = sys.stderr
     sys.stdout = io.StringIO()
@@ -43,11 +43,11 @@ class WorldObjectsCheck(Check):
         return errors
 
     @staticmethod
-    def check_world_objects(annotation, domain, problem, check_id, line_limit, logs):
+    def _check_world_objects(annotation, domain, problem, check_id, line_limit, logs):
         logs = []
         errors = []
 
-        with suppress_stdout() as (stdout, stderr):
+        with _suppress_stdout() as (stdout, stderr):
             domain_problem = DomainProblem(domain, problem)
         logs.append(f"Full output of pddlpy:\n{stdout.getvalue()}{stderr.getvalue()}")
 
@@ -94,7 +94,7 @@ class ActionCheck(Check):
     def run(self, annotation_file, domain_file, problem_file, line_limit=-1) -> List[Error]:
 
         self.logs.clear()
-        errors = self.check_actions(annotation=annotation_file,
+        errors = self._check_actions(annotation=annotation_file,
                                     domain=domain_file,
                                     problem=problem_file,
                                     check_id=self.id,
@@ -103,10 +103,10 @@ class ActionCheck(Check):
         return errors
 
     @staticmethod
-    def check_actions(annotation, domain, problem, check_id, line_limit, logs):
+    def _check_actions(annotation, domain, problem, check_id, line_limit, logs):
         errors = []
 
-        with suppress_stdout() as (stdout, stderr):
+        with _suppress_stdout() as (stdout, stderr):
             domain_problem = DomainProblem(domain, problem)
         logs.append(f"Full output of pddlpy:\n{stdout.getvalue()}{stderr.getvalue()}")
 

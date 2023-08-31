@@ -24,13 +24,13 @@ class SignatureCheck(Check):
     def run(self,annotation_file,domain_file,problem_file,line_limit = -1) -> List[Error]:
         self.logs.clear()
         signatures_file = self.tool_meta.signatures
-        return self.check_signatures(annotation=annotation_file,
+        return self._check_signatures(annotation=annotation_file,
                                      signature_file=signatures_file,
                                      check_id=self.id,
                                      line_limit=line_limit)
 
     @staticmethod
-    def check_signatures(annotation: Path, signature_file: Path, check_id,line_limit):
+    def _check_signatures(annotation: Path, signature_file: Path, check_id,line_limit):
         errors = []
 
         times, divs, expressions = parse_annotation(annotation,line_limit)
