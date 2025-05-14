@@ -14,5 +14,5 @@ csv_sniffer_size = 1024
 candidates = 3
 
 [Validator]
-path = ""
+path = "C:\\Users\\donflixen\\projects\\uni_rostock\\CausalAnnotationCorrection\\annotation-checker\\Val-20211204.1-Linux\\bin\\Validate"
 timeout = 5

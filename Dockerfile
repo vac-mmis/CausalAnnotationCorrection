@@ -1,4 +1,4 @@
-FROM python:3.8.10-slim
+FROM python:3.9.13-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -23,13 +23,16 @@ RUN unzip val.zip
 RUN rm val.zip
 RUN unzip linux64/Val-20211204.1-Linux.zip
 RUN rm -rf linux64
+
+# Import config and then set validator path
 RUN acheck config -v Val-20211204.1-Linux/bin/Validate
 
 #Install enchant and all spellchecking libraries
-RUN apt-get install -y enchant
+RUN apt-get install -y libenchant-2-2 libenchant-2-dev
 RUN apt-get install -y aspell-de
 RUN apt-get install -y aspell-en
 RUN apt-get install -y aspell-fr
+
 
 
 WORKDIR /home/cac/CausalAnnotationCorrection

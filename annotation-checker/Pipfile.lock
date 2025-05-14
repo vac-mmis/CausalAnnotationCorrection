@@ -1,12 +1,12 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "811e410c297fd05ec978c5c068c3b8875821de3cfd03ea69010820407d930e91"
+            "sha256": "89a086515c68b1c7681deee76c331bd0e3f29906e2c2f19d91934935b54a2612"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_full_version": "3.8.10",
-            "python_version": "3.8"
+            "python_full_version": "3.9.13",
+            "python_version": "3.9"
         },
         "sources": [
             {
@@ -19,8 +19,7 @@
     "default": {
         "acheck": {
             "editable": true,
-            "file": ".",
-            "markers": "python_version >= '3.8'"
+            "file": "."
         },
         "antlr4-python3-runtime": {
             "hashes": [
@@ -181,7 +180,6 @@
                 "sha256:39528337b516211197bf4b7b4a0ad4abf54f2c97348894950c7467917a58ed0c",
                 "sha256:cfdefd8b5274ede0685f5e3dab0b0933c98bf0cd24cc140fec0241c154675092"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.8'",
             "version": "==0.4.1"
         },

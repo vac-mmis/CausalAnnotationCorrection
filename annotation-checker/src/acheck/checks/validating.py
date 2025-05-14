@@ -258,7 +258,7 @@ class PDDLSyntaxCheckOld(Check):
             Time after which the validator terminates if it does not receive a response
     """
 
-    timeout = config.load("DomainProblemCheck", "timeout")
+    timeout = 10
 
     def run(
         self, annotation: Path, domain: Path, problem: Path, line_limit: int = -1
