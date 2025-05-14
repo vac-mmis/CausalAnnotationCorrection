@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "acheck"
-version = "0.0.15"
+version = "0.0.16"
 description = "Causal Annotation Correction Tool"
 readme = "README.md"
 authors = [
@@ -24,7 +24,8 @@ dependencies = [
     "pyenchant==3.2.2",
     "toml==0.10.2",
     "requests==2.31.0",
-    "docutils==0.18.1"
+    "docutils==0.18.1",
+    "pddl==0.4.3"
 ]
 requires-python = ">=3.8"
 

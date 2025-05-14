@@ -4,12 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyenchant = "~=3.2.2"
-toml = "~=0.10.2"
-pddlpy = "~=0.3.3"
+pyenchant = "==3.2.2"
+toml = "==0.10.2"
+pddlpy = "==0.3.3"
 antlr4-python3-runtime = "==4.9.3"
 requests = "==2.31.0"
-acheck = {editable = true, path = "."}
+acheck = {file = ".", editable = true}
+docutils = "==0.18.1"
+pddl = "==0.4.3"
 
 [dev-packages]
 twine = "~=4.0.2"

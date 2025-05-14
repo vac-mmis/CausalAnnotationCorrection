@@ -16,6 +16,3 @@ candidates = 3
 [Validator]
 path = ""
 timeout = 5
-
-[DomainProblemCheck]
-timeout = 5
