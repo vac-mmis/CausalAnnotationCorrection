@@ -1,6 +1,11 @@
 (define (domain shoes)
-    (:requirements :negative-preconditions :typing)
-    (:types location object)
+    (:requirements :negative-preconditions :typing :equality :disjunctive-preconditions)
+    (:types location footwear)
+
+	(:constants
+    left_sock right_sock left_shoe right_shoe - footwear
+    left_foot right_foot - location
+  	)
 
     (:predicates
 		(barefoot ?l - location) ; feet can wear nothing
@@ -9,7 +14,7 @@
 	)
 
   (:action putsock
-	   :parameters (?o - object ?l - location)
+	   :parameters (?o - footwear ?l - location)
 	   :precondition (and
 	                 (barefoot ?l)
 	                 (not (hasshoe ?l))
@@ -28,7 +33,7 @@
 
 
     (:action putshoe
-	   :parameters (?o - object ?l - location)
+	   :parameters (?o - footwear ?l - location)
 	   :precondition (hassock ?l)
 
 	   :effect       (when
